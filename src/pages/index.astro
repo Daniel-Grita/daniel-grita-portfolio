@@ -3,56 +3,73 @@ import Layout from '../layouts/Layout.astro';
 
 const work = [
   {
-    period: '2025 — Present',
-    title: 'Senior Product Designer',
-    company: 'Fintech Company',
+    period: '2024 — Present',
+    title: 'Lead Designer',
+    company: 'PayXpert',
     description:
-      'Leading the design of consumer-facing financial products. Responsible for end-to-end design of mobile banking features, payment flows, and data visualization dashboards.',
-    image: '/images/work-01.jpg',
+      'Leading the design at PayXpert, an omnichannel payment solution based in France and Spain. Leading a comprehensive rebranding, transitioning the company from a fragmented identity to a modern, unified system. Balancing complex fintech technical requirements with clean, impactful aesthetics.',
+    image: '/images/payxpert.jpg',
   },
   {
-    period: '2023 — 2025',
-    title: 'Product Designer',
-    company: 'Digital Agency',
+    period: '2024',
+    title: 'Photoshoot & Video Production',
+    company: 'Oppressus',
     description:
-      'Designed interfaces for clients across fintech, e-commerce, and SaaS. Collaborated closely with engineering teams to ship pixel-perfect implementations.',
-    image: '/images/work-02.jpg',
+      'Had the privilege of producing and directing the photoshoot and launch video for these amazing shoes.',
+    image: '/images/oppressus.avif',
+  },
+  {
+    period: '2023 — 2024',
+    title: 'In-House Designer',
+    company: 'Signature Spa Consulting',
+    description:
+      'Worked as the in-house designer at Signature Spa Consulting, a luxury spa chain in Barcelona, Andorra, and Sitges. A major boost for my career, giving me the chance to take on many responsibilities, grow my skills, and get to know the beauty and holistic industry better.',
+    image: '/images/signature-spa.avif',
+  },
+  {
+    period: 'April 2024 — Remote',
+    title: 'Creative Art Direction & Photography',
+    company: 'Adobe & Scopio',
+    description:
+      'Spearheaded the visual narrative for Adobe\'s AI application, overseeing end-to-end production. Managed art direction, talent selection, and location scouting, while executing high-level photography and post-production to ensure a cohesive brand aesthetic.',
+    image: '/images/work-04.jpg',
   },
   {
     period: '2021 — 2023',
-    title: 'Graphic Designer & Content Creator',
-    company: 'Creative Studio',
+    title: 'Content Creator & Designer',
+    company: 'Lash Paris',
     description:
-      'Created brand identities, marketing materials, and social media content for a diverse range of clients. Built design systems from the ground up.',
-    image: '/images/work-03.jpg',
-  },
-  {
-    period: '2019 — 2021',
-    title: 'Junior Graphic Designer',
-    company: 'Marketing Agency',
-    description:
-      'Designed print and digital assets including brochures, banners, social media graphics, and email templates. First professional design role.',
-    image: '/images/work-04.jpg',
+      'Lash Paris, a beauty products company in Breda, Holland, was my introduction to the world of beauty, fashion, and content creation. During my two years there, I focused on creating content for the website and social media, showcasing products and their applications. Also gained my first experience managing photoshoots with models.',
+    image: '/images/lash-paris.avif',
   },
 ];
 ---
 
 <Layout title="Designer — Portfolio">
   <div id="top"></div>
+
+  <!-- Mobile Top Navigation -->
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <a href="#top" class="mobile-nav__link">Top</a>
+    <a href="#about" class="mobile-nav__link">About</a>
+    <a href="#work" class="mobile-nav__link">Work</a>
+    <a href="#contact" class="mobile-nav__link">Connect</a>
+  </nav>
+
   <div class="page">
     <main class="main-content">
       <!-- Hero -->
-      <section class="section hero">
+      <section class="section fade-in hero">
         <h1 class="hero__name">Daniel Grita</h1>
         <p class="hero__bio">
-          Portuguese Graphic Designer and Visual Artist based in Barcelona.
-          Rooted in Graffiti Culture, Graphic Design, Photography, Fine Art,
-          and Street Art.
+          Portuguese Visual Artist based in Barcelona. Wrestling daily with
+          Graphic Design, Web Design, and Creative Direction to turn complex
+          ideas into visual stories.
         </p>
       </section>
 
       <!-- About -->
-      <section class="section about" id="about">
+      <section class="section fade-in about" id="about">
         <h2 class="section__label">About</h2>
         <div class="about__content">
           <p>
@@ -73,19 +90,23 @@ const work = [
       </section>
 
       <!-- Work -->
-      <section class="section work" id="work">
+      <section class="section fade-in work" id="work">
         <h2 class="section__label">Work</h2>
         <div class="work__list">
-          {work.map((entry) => (
-            <article class="work__entry">
+          {work.map((entry, i) => (
+            <article class={`work__entry ${i === 0 ? 'fade-in' : 'animate'}`}>
               <span class="work__period">{entry.period}</span>
               <h3 class="work__title">{entry.title}</h3>
               <span class="work__company">{entry.company}</span>
               <p class="work__description">{entry.description}</p>
               <div class="work__image">
-                <div class="work__image-placeholder">
-                  <span>Image placeholder</span>
-                </div>
+                {entry.image.includes('work-') ? (
+                  <div class="work__image-placeholder">
+                    <span>Image placeholder</span>
+                  </div>
+                ) : (
+                  <img src={entry.image} alt={`${entry.company} project`} />
+                )}
               </div>
             </article>
           ))}
@@ -101,7 +122,7 @@ const work = [
             <br />Let's talk.
           </p>
           <div class="contact__links">
-            <a href="mailto:danielgrita@gmail.com">danielgrita@gmail.com</a>
+            <a href="mailto:danielgrita@gmail.com?subject=Job%20Request">danielgrita@gmail.com</a>
             <a href="tel:+34623980135">+34 623 980 135</a>
             <a href="https://www.linkedin.com/in/danielgrita/" target="_blank" rel="noopener">LinkedIn</a>
             <a href="https://www.instagram.com/danielgrita" target="_blank" rel="noopener">Instagram</a>
@@ -111,7 +132,7 @@ const work = [
     </main>
 
     <!-- Side Navigation -->
-    <nav class="side-nav" aria-label="Page navigation">
+    <nav class="side-nav fade-in" aria-label="Page navigation">
       <div class="side-nav__inner">
         <a href="#top" class="side-nav__link">Top</a>
         <a href="#about" class="side-nav__link">About</a>
@@ -120,6 +141,8 @@ const work = [
       </div>
     </nav>
   </div>
+
+
 </Layout>
 
 <style>
@@ -128,11 +151,11 @@ const work = [
      ------------------------------------------------ */
 
   .hero {
-    padding-bottom: var(--space-xl);
+    padding-bottom: var(--space-sm);
   }
 
   .hero__name {
-    margin-bottom: var(--space-md);
+    margin-bottom: var(--space-xs);
   }
 
   .hero__bio {
@@ -251,6 +274,13 @@ const work = [
 
   .side-nav {
     position: relative;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    transition-delay: 0.9s;
+  }
+
+  .side-nav.is-visible {
+    opacity: 1;
   }
 
   .side-nav__inner {
@@ -279,6 +309,14 @@ const work = [
      Responsive
      ------------------------------------------------ */
 
+  /* ------------------------------------------------
+     Mobile Top Navigation
+     ------------------------------------------------ */
+
+  .mobile-nav {
+    display: none;
+  }
+
   @media (max-width: 768px) {
     .side-nav {
       display: none;
@@ -290,5 +328,100 @@ const work = [
     .contact__content {
       max-width: 100%;
     }
+
+    .contact__links {
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .mobile-nav {
+      display: flex;
+      position: sticky;
+      top: 0;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0.75rem var(--space-sm);
+      background-color: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      z-index: 100;
+    }
+
+    .mobile-nav__link {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .mobile-nav__link:hover {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+  }
+
+  /* ------------------------------------------------
+     Scroll animations
+     ------------------------------------------------ */
+
+  .section {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .section.fade-in {
+    transform: none;
+  }
+
+  .hero { transition-delay: 0s; }
+  .about { transition-delay: 0.3s; }
+  .work { transition-delay: 0.6s; }
+  .work__entry.fade-in { transition-delay: 0.6s; }
+
+  .section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .animate,
+  .work__entry.fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .animate {
+    transform: translateY(25px);
+  }
+
+  .animate.is-visible,
+  .work__entry.fade-in.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
 </style>
+
+<script>
+  // Fade in hero, about, work label, and first project immediately on load
+  const immediate = document.querySelectorAll('.section.fade-in, .work__entry.fade-in, .side-nav.fade-in');
+  requestAnimationFrame(() => {
+    immediate.forEach((el) => el.classList.add('is-visible'));
+  });
+
+  // Scroll-triggered animations for everything else
+  const scrollElements = document.querySelectorAll('.section:not(.fade-in), .animate');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.15 }
+  );
+
+  scrollElements.forEach((el) => observer.observe(el));
+</script>
