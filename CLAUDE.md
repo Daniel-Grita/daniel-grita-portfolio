@@ -87,20 +87,20 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 - Toggle button placed in side nav, mobile nav, and project pages
 - User preference persisted to `localStorage` under key `theme`
 
-## Session Recap (2026-04-03 evening)
+## Session Recap (2026-04-04)
 
 ### What exists
 - **Main page** (`/`) — Hero, about, work entries, contact with sticky side nav and mobile nav. All text spans full content width. Fixed "Design System" button (bottom-right).
 - **Project pages** (`/work/[slug]`) — Two layout modes:
-  - **Case study layout** (PayXpert) — Full flowing page with hero image, 8 content sections, image galleries, cards, accent highlight banner, and Connect section matching the index page.
+  - **Case study layout** (PayXpert) — Full flowing page with hero image, 8 content sections, image galleries with lightbox, cards, accent highlight banner, and Connect section matching the index page.
   - **Simple layout** (all other projects) — Title, role, period, description + back link.
-- **Case study data** in `src/data/case-studies.ts` — Structured per-section content (title, body, cards, highlight, images). Keyed by slug; `[slug].astro` checks for case study data and renders accordingly.
+- **Case study data** in `src/data/case-studies.ts` — Structured per-section content (title, body, cards, highlight, images, imageCaption, uniformImages). Keyed by slug; `[slug].astro` checks for case study data and renders accordingly.
 - **Design system** (`/design-system`) — Full living reference with same two-column layout as portfolio (side nav, mobile nav, scroll-spy, scroll animations). Shows all 8 color tokens with light/dark values, typography, spacing, layout diagram, component previews (section label, work entry, side nav with active state, case study card, highlight banner, contact links, theme toggle), and interactive states. Fixed "← Portfolio" button (bottom-right). Dark mode fully supported.
 - **Dark mode** — Full implementation with toggle, localStorage persistence, system preference fallback
 
 ### Shared modules
 - **`src/scripts/scroll-spy.ts`** — Shared scroll-spy with floating dot, used by index, slug, and design-system pages. Named constants for magic numbers, pre-computed href-to-id mapping.
-- **`global.css`** — Contains shared styles: `.section__label`, `.contact__content`, `.contact__links`, `.fade-in`, `.animate`, `.is-visible`, `.nav-dot`, `.is-active`, `.theme-toggle`. New `--color-on-accent` token for text on accent backgrounds.
+- **`global.css`** — Contains shared styles: `.section__label`, `.contact__content`, `.contact__links`, `.fade-in`, `.animate`, `.is-visible`, `.nav-dot`, `.is-active`, `.theme-toggle`. Tokens: `--color-on-accent`, `--color-img-bg`.
 
 ### Active nav indicator (global)
 - **Scroll-spy** on index, project, and design-system pages highlights the current section in side nav and mobile nav
@@ -109,23 +109,26 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 - Bottom-of-page detection activates the last nav item
 - Styles defined globally in `global.css`; scroll-spy logic in shared `src/scripts/scroll-spy.ts`
 
-### PayXpert case study sections
-1. **Overview** — Intro text + 3 goal cards. No image.
-2. **The Challenge** — Text + 2 need cards + 4-image gallery (`payxpert-old-*.jpg`) + accent "Problem to Solve" highlight banner
-3. **Research & Strategy** — Text + 2-image gallery (`payxpert-research-*.png`)
-4. **Web Design** — Labeled section + text + 3 cards + 2-image gallery (`payxpert-web-*.jpg`)
-5. **Social Media** — Labeled + text + 3 cards + image placeholder
-6. **Print & Technical Materials** — Labeled + text + 3 cards + image placeholder
-7. **The Design System** — Labeled + text + 2 cards + image placeholder
-8. **Key Takeaways** — 3 cards + image placeholder
-9. **Connect** — Matches index page contact section exactly
-
 ### Image galleries
 - Sections can have `images?: string[]` in case study data
 - `images: []` (empty) = no image, no placeholder
 - `images` undefined = shows grey placeholder
-- `images` with entries = horizontal gallery grid (`repeat(auto-fit, minmax(0, 1fr))`), original aspect ratios, `object-fit: cover`
-- Mobile: stacks to single column
+- `images` with entries = horizontal gallery grid inside a light grey box (`--color-img-bg`, 12px radius), wrapped in `<figure>` with optional `<figcaption>` caption
+- `uniformImages?: boolean` = forces `aspect-ratio: 4/3` on images (used by Print Materials)
+- **Lightbox** — clicking any gallery or hero image opens fullscreen overlay. Close via X, backdrop click, or Escape.
+- Mobile: gallery stacks to single column
+- All images optimized as `.webp`
+
+### PayXpert case study sections
+1. **Overview** — Intro text + 3 goal cards. No image.
+2. **The Challenge** — Text + 2 need cards + 4-image gallery (`payxpert-old-*.webp`) + caption + accent "Problem to Solve" highlight banner
+3. **Research & Strategy** — Text + 2-image gallery (`payxpert-research-*.webp`) + caption
+4. **Web Design** — Labeled section + text + 3 cards + 2-image gallery (`payxpert-web-*.webp`) + caption
+5. **Social Media** — Labeled + text + 3 cards + 3-image gallery (`payxpert-social-*.webp`) + caption
+6. **Print & Technical Materials** — Labeled + text + 3 cards + 3-image gallery (`payxpert-print-*.webp`, uniform 4:3) + caption
+7. **The Design System** — Labeled + text + 2 cards + 1-image gallery (`payxpert-guidelines-01.webp`) + caption
+8. **Key Takeaways** — 3 cards. No image, no placeholder.
+9. **Connect** — Matches index page contact section exactly
 
 ### Work entries
 1. PayXpert — Lead Designer, 2024–Present (has image, **has case study**)
@@ -135,8 +138,6 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 5. Lash Paris — Content Creator & Designer, 2021–2023 (has image)
 
 ### Still to do
-- Add real images for remaining PayXpert placeholder sections (Social, Print, Design System, Takeaways)
-- Add meaningful alt text to gallery images (deferred until all images are in)
+- SEO improvements (personalized meta, OG tags, sitemap, robots.txt, alt text, canonical URLs, noindex design system)
 - Build case studies for other projects (Oppressus, Signature Spa, etc.)
 - Replace Adobe & Scopio placeholder image with a real one
-- SEO audit and optimization

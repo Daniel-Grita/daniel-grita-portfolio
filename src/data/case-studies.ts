@@ -11,6 +11,8 @@ export interface CaseStudySection {
   highlight?: string;
   cards?: CaseStudyCard[];
   images?: string[];
+  imageCaption?: string;
+  uniformImages?: boolean;
 }
 
 export interface CaseStudy {
@@ -75,25 +77,27 @@ export const caseStudies: Record<string, CaseStudy> = {
           },
         ],
         images: [
-          '/images/payxpert-old-01.jpg',
-          '/images/payxpert-old-04.jpg',
-          '/images/payxpert-old-02.jpg',
-          '/images/payxpert-old-03.jpg',
+          '/images/payxpert-old-01.webp',
+          '/images/payxpert-old-04.webp',
+          '/images/payxpert-old-02.webp',
+          '/images/payxpert-old-03.webp',
         ],
+        imageCaption: 'Previous social media assets and website before the rebrand.',
       },
       {
         id: 'strategy',
         title: 'Research & Strategy',
         body: "Competitive analysis revealed that while PayXpert was feature-rich, its visual language lacked the breathing room found in top-tier fintech competitors.\n\nThese insights shaped a less-is-more approach — prioritizing thoughtful typography and a refreshed color palette to build long-term brand equity.",
         images: [
-          '/images/payxpert-research-01.png',
-          '/images/payxpert-research-02.png',
+          '/images/payxpert-research-01.webp',
+          '/images/payxpert-research-02.webp',
         ],
+        imageCaption: 'Competitive analysis of leading fintech brands.',
       },
       {
         id: 'web-design',
         label: 'Web Design',
-        title: 'From Clutter to Clarity',
+
         body: 'The previous website was visually busy and lacked clear hierarchy. As the primary tool for communicating value to merchants, a total digital redesign was the first priority.',
         cards: [
           {
@@ -113,14 +117,15 @@ export const caseStudies: Record<string, CaseStudy> = {
           },
         ],
         images: [
-          '/images/payxpert-web-01.jpg',
-          '/images/payxpert-web-02.jpg',
+          '/images/payxpert-web-01.webp',
+          '/images/payxpert-web-02.webp',
         ],
+        imageCaption: 'The redesigned PayXpert website — cleaner hierarchy and modern layouts.',
       },
       {
         id: 'social',
         label: 'Social Media',
-        title: 'Elevating the Narrative',
+
         body: 'Previous social assets suffered from crowded layouts and generic tech imagery that dated the brand. The revamp introduced a clean aesthetic that puts the message first.',
         cards: [
           {
@@ -139,11 +144,17 @@ export const caseStudies: Record<string, CaseStudy> = {
               'Established a style that allows for evolution while maintaining strict consistency with brand colors.',
           },
         ],
+        images: [
+          '/images/payxpert-social-01.webp',
+          '/images/payxpert-social-02.webp',
+          '/images/payxpert-social-03.webp',
+        ],
+        imageCaption: 'Redesigned social media posts for PayXpert.',
       },
       {
         id: 'print',
         label: 'Print & Technical Materials',
-        title: 'Making Complexity Digestible',
+
         body: 'Brochures, flyers, and whitepapers needed to deliver in-depth technical and regulatory information without sacrificing visual appeal.',
         cards: [
           {
@@ -162,11 +173,18 @@ export const caseStudies: Record<string, CaseStudy> = {
               'Carefully balanced typography and color to make complex payment data accessible to a broad audience.',
           },
         ],
+        images: [
+          '/images/payxpert-print-01.webp',
+          '/images/payxpert-print-02.webp',
+          '/images/payxpert-print-03.webp',
+        ],
+        imageCaption: 'Whitepapers, brochures, and printed materials for PayXpert.',
+        uniformImages: true,
       },
       {
         id: 'design-system',
         label: 'The Design System',
-        title: 'A Practical Framework',
+
         body: 'To ensure the rebrand endures, I developed a comprehensive set of brand guidelines covering every visual asset.',
         cards: [
           {
@@ -180,6 +198,10 @@ export const caseStudies: Record<string, CaseStudy> = {
               'Provided PowerPoint and Word templates to make the new identity seamless for all departments.',
           },
         ],
+        images: [
+          '/images/payxpert-guidelines-01.webp',
+        ],
+        imageCaption: 'Brand guidelines mockup for PayXpert.',
       },
       {
         id: 'takeaways',
@@ -201,6 +223,7 @@ export const caseStudies: Record<string, CaseStudy> = {
               'Rebranding is cross-departmental — balancing creative vision with the precision demanded by Legal and Compliance.',
           },
         ],
+        images: [],
       },
     ],
   },

@@ -77,11 +77,16 @@ const caseStudy = caseStudies[slug];
             )}
 
             {section.images && section.images.length > 0 ? (
-              <div class="cs__gallery">
-                {section.images.map((src) => (
-                  <img src={src} alt="" />
-                ))}
-              </div>
+              <figure class="cs__figure">
+                <div class={`cs__gallery${section.uniformImages ? ' cs__gallery--uniform' : ''}`}>
+                  {section.images.map((src) => (
+                    <img src={src} alt="" />
+                  ))}
+                </div>
+                {section.imageCaption && (
+                  <figcaption class="cs__caption">{section.imageCaption}</figcaption>
+                )}
+              </figure>
             ) : section.images === undefined ? (
               <div class="cs__image-placeholder">
                 <span>Image placeholder</span>
@@ -127,6 +132,12 @@ const caseStudy = caseStudies[slug];
           </button>
         </div>
       </nav>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" aria-hidden="true">
+      <button class="lightbox__close" type="button" aria-label="Close image">&times;</button>
+      <img class="lightbox__img" src="" alt="" />
     </div>
   ) : (
     <!-- Simple layout (no case study) -->
@@ -200,7 +211,7 @@ const caseStudy = caseStudies[slug];
 
   .cs__hero img {
     width: 100%;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
   }
 
   /* ------------------------------------------------
@@ -216,7 +227,7 @@ const caseStudy = caseStudies[slug];
     margin-bottom: var(--space-sm);
     padding: 0.25rem 0.75rem;
     background-color: var(--color-accent);
-    border-radius: 2px;
+    border-radius: var(--radius-sm);
     font-size: 0.75rem;
     font-weight: 700;
     color: var(--color-on-accent);
@@ -245,11 +256,21 @@ const caseStudy = caseStudies[slug];
      Case Study — Image Gallery
      ------------------------------------------------ */
 
+  .cs__figure {
+    margin-top: var(--space-md);
+  }
+
+  .cs__hero,
+  .cs__gallery {
+    background-color: var(--color-img-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+  }
+
   .cs__gallery {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
-    gap: var(--space-xs);
-    margin-top: var(--space-md);
+    gap: var(--space-sm);
     align-items: start;
   }
 
@@ -257,7 +278,19 @@ const caseStudy = caseStudies[slug];
     width: 100%;
     height: auto;
     object-fit: cover;
-    border-radius: 4px;
+    border-radius: var(--radius-md);
+  }
+
+  .cs__gallery--uniform img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .cs__caption {
+    text-align: center;
+    font-size: 0.875rem;
+    font-style: italic;
+    color: var(--color-text-secondary);
+    margin-top: var(--space-sm);
   }
 
   @media (max-width: 768px) {
@@ -275,7 +308,7 @@ const caseStudy = caseStudies[slug];
     aspect-ratio: 16 / 9;
     margin-top: var(--space-md);
     background-color: var(--color-border);
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -300,7 +333,7 @@ const caseStudy = caseStudies[slug];
 
   .cs__card {
     border: 1px solid var(--color-border);
-    border-radius: 4px;
+    border-radius: var(--radius-md);
     padding: var(--space-md);
   }
 
@@ -325,7 +358,7 @@ const caseStudy = caseStudies[slug];
     margin-top: var(--space-md);
     padding: var(--space-md) var(--space-md);
     background-color: var(--color-accent);
-    border-radius: 4px;
+    border-radius: var(--radius-md);
   }
 
   .cs__highlight-title {
@@ -505,11 +538,70 @@ const caseStudy = caseStudies[slug];
     margin-top: var(--space-md);
     line-height: 1.7;
   }
+
+  /* ------------------------------------------------
+     Lightbox
+     ------------------------------------------------ */
+
+  .cs__gallery img,
+  .cs__hero img {
+    cursor: zoom-in;
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.85);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .lightbox.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .lightbox__img {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+  }
+
+  .lightbox.is-open .lightbox__img {
+    transform: scale(1);
+  }
+
+  .lightbox__close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.25rem 0.5rem;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .lightbox__close:hover {
+    opacity: 1;
+  }
 </style>
 
 <script>
   // Fade in header, hero, and side nav immediately
-  const immediate = document.querySelectorAll('.fade-in, .side-nav.fade-in');
+  const immediate = document.querySelectorAll('.fade-in');
   requestAnimationFrame(() => {
     immediate.forEach((el) => el.classList.add('is-visible'));
   });
@@ -536,4 +628,31 @@ const caseStudy = caseStudies[slug];
   // Scroll-spy: highlight active nav link + floating dot
   import { initScrollSpy } from '../../scripts/scroll-spy';
   initScrollSpy();
+
+  // Lightbox
+  const lightbox = document.querySelector('.lightbox') as HTMLElement | null;
+  const lightboxImg = document.querySelector('.lightbox__img') as HTMLImageElement | null;
+
+  if (lightbox && lightboxImg) {
+    document.querySelectorAll('.cs__gallery img, .cs__hero img').forEach((img) => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = (img as HTMLImageElement).src;
+        lightbox.classList.add('is-open');
+        lightbox.setAttribute('aria-hidden', 'false');
+      });
+    });
+
+    const close = () => {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+    };
+
+    lightbox.querySelector('.lightbox__close')?.addEventListener('click', close);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('is-open')) close();
+    });
+  }
 </script>
