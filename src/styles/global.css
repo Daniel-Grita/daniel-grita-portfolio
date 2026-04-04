@@ -18,6 +18,7 @@
   --color-border: #e5e5e5;
   --color-hover: #000000;
   --color-accent: #cff500;
+  --color-on-accent: #191d1a;
 
   --font-sans: 'Quantico', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     sans-serif;
@@ -146,6 +147,26 @@ p {
    ------------------------------------------------ */
 
 /* ------------------------------------------------
+   Active nav link
+   ------------------------------------------------ */
+
+.side-nav__link.is-active,
+.mobile-nav__link.is-active {
+  font-weight: 900;
+  color: var(--color-hover);
+}
+
+.nav-dot {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background-color: var(--color-text-secondary);
+  border-radius: 50%;
+  transition: top 0.35s cubic-bezier(0.4, 0, 0.2, 1), left 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* ------------------------------------------------
    Theme toggle
    ------------------------------------------------ */
 
@@ -165,6 +186,70 @@ p {
 }
 
 /* ------------------------------------------------
+   Section label (accent pill)
+   ------------------------------------------------ */
+
+.section__label {
+  display: inline-block;
+  margin-bottom: var(--space-md);
+  padding: 0.25rem 0.75rem;
+  background-color: var(--color-accent);
+  border-radius: 2px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-on-accent);
+}
+
+/* ------------------------------------------------
+   Contact
+   ------------------------------------------------ */
+
+.contact__content {
+  max-width: 560px;
+}
+
+.contact__links {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.contact__links a {
+  font-size: 0.9375rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--color-text-secondary);
+}
+
+.contact__links a:hover {
+  color: var(--color-accent);
+}
+
+/* ------------------------------------------------
+   Scroll animations
+   ------------------------------------------------ */
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.fade-in.is-visible {
+  opacity: 1;
+}
+
+.animate {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------
    Responsive
    ------------------------------------------------ */
 
@@ -176,5 +261,10 @@ p {
   .page {
     grid-template-columns: 1fr;
     padding: var(--space-lg) var(--space-sm);
+  }
+
+  .contact__links {
+    flex-direction: column;
+    gap: var(--space-xs);
   }
 }

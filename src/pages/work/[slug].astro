@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { work } from '../../data/work';
+import { caseStudies } from '../../data/case-studies';
 
 export function getStaticPaths() {
   return work.map((entry) => ({
@@ -9,28 +10,450 @@ export function getStaticPaths() {
   }));
 }
 
-const { title, company, period, description, image } = Astro.props;
+const { title, company, period, description, image, slug } = Astro.props;
+const caseStudy = caseStudies[slug];
 ---
 
 <Layout title={`${company} — Daniel Grita`}>
-  <div class="project">
-    <div class="project__top">
-      <a href="/#work" class="project__back">← Back to portfolio</a>
+  {caseStudy ? (
+    <!-- Case study layout -->
+    <div id="top"></div>
+
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+      {caseStudy.navItems.map((item) => (
+        <a href={`#${item.id}`} class="mobile-nav__link">{item.label}</a>
+      ))}
       <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
         <span class="theme-toggle__icon theme-toggle__icon--light">☀</span>
         <span class="theme-toggle__icon theme-toggle__icon--dark">☾</span>
       </button>
+    </nav>
+
+    <div class="page">
+      <main class="main-content">
+        <!-- Header -->
+        <header class="cs__header fade-in">
+          <a href="/#work" class="cs__back">← Back to portfolio</a>
+          <span class="cs__period">{period}</span>
+          <h1 class="cs__company">{company}</h1>
+          <p class="cs__role">{title}</p>
+        </header>
+
+        <!-- Hero image -->
+        {image && !image.includes('work-') && (
+          <div class="cs__hero fade-in">
+            <img src={image} alt={`${company} project`} />
+          </div>
+        )}
+
+        <!-- Sections -->
+        {caseStudy.sections.map((section) => (
+          <section class="cs__section animate" id={section.id}>
+            {section.label && (
+              <span class="cs__label">{section.label}</span>
+            )}
+
+            {section.title && (
+              <h2 class="cs__title">{section.title}</h2>
+            )}
+
+            {section.body && (
+              <div class="cs__body">
+                {section.body.split('\n\n').map((paragraph) => (
+                  <p>{paragraph}</p>
+                ))}
+              </div>
+            )}
+
+            {section.cards && (
+              <div class={`cs__cards ${section.cards.length === 2 ? 'cs__cards--two' : ''}`}>
+                {section.cards.map((card) => (
+                  <div class="cs__card">
+                    <h3 class="cs__card-title">{card.title}</h3>
+                    <p class="cs__card-desc">{card.description}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {section.images && section.images.length > 0 ? (
+              <div class="cs__gallery">
+                {section.images.map((src) => (
+                  <img src={src} alt="" />
+                ))}
+              </div>
+            ) : section.images === undefined ? (
+              <div class="cs__image-placeholder">
+                <span>Image placeholder</span>
+              </div>
+            ) : null}
+
+            {section.highlight && (
+              <div class="cs__highlight">
+                <h3 class="cs__highlight-title">Problem to Solve</h3>
+                <p>{section.highlight}</p>
+              </div>
+            )}
+          </section>
+        ))}
+
+        <!-- Connect -->
+        <section class="cs__section section contact animate" id="connect">
+          <h2 class="section__label">Connect</h2>
+          <div class="contact__content">
+            <p>
+              Open to freelance projects, collaborations, and new opportunities.
+              <br /><strong>Let's talk.</strong>
+            </p>
+            <div class="contact__links">
+              <a href="mailto:danielgrita@gmail.com?subject=Job%20Request">danielgrita@gmail.com</a>
+              <a href="tel:+34623980135">+34 623 980 135</a>
+              <a href="https://www.linkedin.com/in/danielgrita/" target="_blank" rel="noopener">LinkedIn</a>
+              <a href="https://www.instagram.com/danielgrita" target="_blank" rel="noopener">Instagram</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Side Navigation -->
+      <nav class="side-nav fade-in" aria-label="Page navigation">
+        <div class="side-nav__inner">
+          {caseStudy.navItems.map((item) => (
+            <a href={`#${item.id}`} class="side-nav__link">{item.label}</a>
+          ))}
+          <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+            <span class="theme-toggle__icon theme-toggle__icon--light">☀</span>
+            <span class="theme-toggle__icon theme-toggle__icon--dark">☾</span>
+          </button>
+        </div>
+      </nav>
     </div>
-    <header class="project__header">
-      <span class="project__period">{period}</span>
-      <h1 class="project__title">{company}</h1>
-      <p class="project__role">{title}</p>
-    </header>
-    <p class="project__description">{description}</p>
-  </div>
+  ) : (
+    <!-- Simple layout (no case study) -->
+    <div class="project">
+      <div class="project__top">
+        <a href="/#work" class="project__back">← Back to portfolio</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <span class="theme-toggle__icon theme-toggle__icon--light">☀</span>
+          <span class="theme-toggle__icon theme-toggle__icon--dark">☾</span>
+        </button>
+      </div>
+      <header class="project__header">
+        <span class="project__period">{period}</span>
+        <h1 class="project__title">{company}</h1>
+        <p class="project__role">{title}</p>
+      </header>
+      <p class="project__description">{description}</p>
+    </div>
+  )}
 </Layout>
 
 <style>
+  /* ------------------------------------------------
+     Case Study — Header
+     ------------------------------------------------ */
+
+  .cs__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .cs__back {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    margin-bottom: var(--space-sm);
+    transition: color 0.2s ease;
+  }
+
+  .cs__back:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .cs__period {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .cs__company {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .cs__role {
+    font-size: 1.125rem;
+    color: var(--color-text-secondary);
+  }
+
+  /* ------------------------------------------------
+     Case Study — Hero Image
+     ------------------------------------------------ */
+
+  .cs__hero {
+    margin-top: var(--space-lg);
+  }
+
+  .cs__hero img {
+    width: 100%;
+    border-radius: 4px;
+  }
+
+  /* ------------------------------------------------
+     Case Study — Sections
+     ------------------------------------------------ */
+
+  .cs__section {
+    margin-top: var(--space-xl);
+  }
+
+  .cs__label {
+    display: inline-block;
+    margin-bottom: var(--space-sm);
+    padding: 0.25rem 0.75rem;
+    background-color: var(--color-accent);
+    border-radius: 2px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-on-accent);
+  }
+
+  .cs__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-title);
+    margin-bottom: var(--space-sm);
+  }
+
+  .cs__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .cs__body p {
+    line-height: 1.7;
+  }
+
+  /* ------------------------------------------------
+     Case Study — Image Gallery
+     ------------------------------------------------ */
+
+  .cs__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    gap: var(--space-xs);
+    margin-top: var(--space-md);
+    align-items: start;
+  }
+
+  .cs__gallery img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .cs__gallery {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ------------------------------------------------
+     Case Study — Image Placeholder
+     ------------------------------------------------ */
+
+  .cs__image-placeholder {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-top: var(--space-md);
+    background-color: var(--color-border);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+  }
+
+  /* ------------------------------------------------
+     Case Study — Cards
+     ------------------------------------------------ */
+
+  .cs__cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .cs__cards--two {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cs__card {
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    padding: var(--space-md);
+  }
+
+  .cs__card-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-title);
+    margin-bottom: var(--space-xs);
+  }
+
+  .cs__card-desc {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+
+  /* ------------------------------------------------
+     Case Study — Highlight Banner
+     ------------------------------------------------ */
+
+  .cs__highlight {
+    margin-top: var(--space-md);
+    padding: var(--space-md) var(--space-md);
+    background-color: var(--color-accent);
+    border-radius: 4px;
+  }
+
+  .cs__highlight-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-on-accent);
+    margin-bottom: var(--space-xs);
+  }
+
+  .cs__highlight p {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--color-on-accent);
+    max-width: none;
+  }
+
+  /* ------------------------------------------------
+     Case Study — Side Navigation
+     ------------------------------------------------ */
+
+  .side-nav {
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    transition-delay: 0.5s;
+  }
+
+  .side-nav.is-visible {
+    opacity: 1;
+  }
+
+  .side-nav__inner {
+    position: sticky;
+    top: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    text-align: right;
+  }
+
+  .side-nav__link {
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: 0.125rem 0;
+    transition: color 0.2s ease;
+  }
+
+  .side-nav__link:hover {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  /* ------------------------------------------------
+     Case Study — Mobile Navigation
+     ------------------------------------------------ */
+
+  .mobile-nav {
+    display: none;
+  }
+
+  /* ------------------------------------------------
+     Case Study — Responsive
+     ------------------------------------------------ */
+
+  @media (max-width: 768px) {
+    .side-nav {
+      display: none;
+    }
+
+    .cs__company {
+      font-size: 2rem;
+    }
+
+    .cs__cards {
+      grid-template-columns: 1fr;
+    }
+
+    .cs__cards--two {
+      grid-template-columns: 1fr;
+    }
+
+    .mobile-nav {
+      display: flex;
+      position: sticky;
+      top: 0;
+      align-items: center;
+      padding: 0.75rem var(--space-sm);
+      background-color: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+      z-index: 100;
+      overflow-x: auto;
+      gap: var(--space-sm);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-nav__link {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.2s ease;
+    }
+
+    .mobile-nav__link:hover {
+      color: var(--color-accent);
+      text-decoration: none;
+    }
+  }
+
+  /* ------------------------------------------------
+     Case Study — Scroll animation overrides (base in global.css)
+     ------------------------------------------------ */
+
+  .cs__header.fade-in {
+    transition-delay: 0s;
+  }
+
+  .cs__hero.fade-in {
+    transition-delay: 0.2s;
+  }
+
+  /* ------------------------------------------------
+     Simple Layout (non case-study fallback)
+     ------------------------------------------------ */
+
   .project {
     max-width: var(--max-width);
     margin: 0 auto;
@@ -83,3 +506,34 @@ const { title, company, period, description, image } = Astro.props;
     line-height: 1.7;
   }
 </style>
+
+<script>
+  // Fade in header, hero, and side nav immediately
+  const immediate = document.querySelectorAll('.fade-in, .side-nav.fade-in');
+  requestAnimationFrame(() => {
+    immediate.forEach((el) => el.classList.add('is-visible'));
+  });
+
+  // Scroll-triggered animations for sections
+  const scrollElements = document.querySelectorAll('.animate');
+
+  if (scrollElements.length > 0) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    scrollElements.forEach((el) => observer.observe(el));
+  }
+
+  // Scroll-spy: highlight active nav link + floating dot
+  import { initScrollSpy } from '../../scripts/scroll-spy';
+  initScrollSpy();
+</script>

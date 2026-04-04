@@ -109,7 +109,7 @@ import { work } from '../data/work';
     </nav>
   </div>
 
-
+  <a href="/design-system" class="ds-link">Design System</a>
 </Layout>
 
 <style>
@@ -126,24 +126,8 @@ import { work } from '../data/work';
   }
 
   .hero__bio {
-    max-width: 560px;
     font-size: 1.125rem;
     line-height: 1.7;
-  }
-
-  /* ------------------------------------------------
-     Section label
-     ------------------------------------------------ */
-
-  .section__label {
-    display: inline-block;
-    margin-bottom: var(--space-md);
-    padding: 0.25rem 0.75rem;
-    background-color: var(--color-accent);
-    border-radius: 2px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #191d1a;
   }
 
   /* ------------------------------------------------
@@ -151,7 +135,6 @@ import { work } from '../data/work';
      ------------------------------------------------ */
 
   .about__content {
-    max-width: 560px;
     display: flex;
     flex-direction: column;
     gap: var(--space-sm);
@@ -190,7 +173,6 @@ import { work } from '../data/work';
   }
 
   .work__description {
-    max-width: 560px;
     margin-top: var(--space-xs);
   }
 
@@ -227,31 +209,6 @@ import { work } from '../data/work';
     justify-content: center;
     color: var(--color-text-secondary);
     font-size: 0.875rem;
-  }
-
-  /* ------------------------------------------------
-     Contact
-     ------------------------------------------------ */
-
-  .contact__content {
-    max-width: 560px;
-  }
-
-  .contact__links {
-    display: flex;
-    gap: var(--space-md);
-    margin-top: var(--space-md);
-  }
-
-  .contact__links a {
-    font-size: 0.9375rem;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    color: var(--color-text-secondary);
-  }
-
-  .contact__links a:hover {
-    color: var(--color-accent);
   }
 
   /* ------------------------------------------------
@@ -308,18 +265,6 @@ import { work } from '../data/work';
       display: none;
     }
 
-    .hero__bio,
-    .about__content,
-    .work__description,
-    .contact__content {
-      max-width: 100%;
-    }
-
-    .contact__links {
-      flex-direction: column;
-      gap: var(--space-xs);
-    }
-
     .mobile-nav {
       display: flex;
       position: sticky;
@@ -347,7 +292,7 @@ import { work } from '../data/work';
   }
 
   /* ------------------------------------------------
-     Scroll animations
+     Scroll animation overrides (base in global.css)
      ------------------------------------------------ */
 
   .section {
@@ -370,20 +315,41 @@ import { work } from '../data/work';
     transform: translateY(0);
   }
 
-  .animate,
   .work__entry.fade-in {
     opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
 
-  .animate {
-    transform: translateY(25px);
-  }
-
-  .animate.is-visible,
   .work__entry.fade-in.is-visible {
     opacity: 1;
     transform: translateY(0);
+  }
+
+  /* ------------------------------------------------
+     Design System link
+     ------------------------------------------------ */
+
+  .ds-link {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--color-title);
+    color: var(--color-bg);
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-family: var(--font-sans);
+    border-radius: 2px;
+    transition: opacity 0.2s ease;
+    z-index: 50;
+  }
+
+  .ds-link:hover {
+    opacity: 0.8;
+    color: var(--color-bg);
+    text-decoration: none;
   }
 </style>
 
@@ -410,4 +376,8 @@ import { work } from '../data/work';
   );
 
   scrollElements.forEach((el) => observer.observe(el));
+
+  // Scroll-spy: highlight active nav link + floating dot
+  import { initScrollSpy } from '../scripts/scroll-spy';
+  initScrollSpy();
 </script>
