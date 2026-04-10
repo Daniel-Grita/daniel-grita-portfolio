@@ -6,6 +6,8 @@ import MobileNav from '../components/MobileNav.astro';
 import { work, projects } from '../data/work';
 import type { WorkEntry } from '../data/work';
 import { caseStudies } from '../data/case-studies';
+import { imgDims } from '../data/image-dimensions';
+import { imgAlt } from '../data/image-alt';
 
 const hasProjectPage = (entry: WorkEntry) => entry.projectDescription || entry.projectHero;
 const linkLabel = (entry: WorkEntry) => caseStudies[entry.slug] ? 'View use case →' : 'View project →';
@@ -69,7 +71,7 @@ const navItems = [
               <p class="work__description">{entry.description}</p>
               {!entry.image.includes('work-') && (
                 <div class="work__image">
-                  <img src={entry.image} alt={`${entry.company} project`} loading="lazy" />
+                  <img src={entry.image} alt={imgAlt(entry.image)} loading="lazy" width={imgDims(entry.image)?.width} height={imgDims(entry.image)?.height} />
                 </div>
               )}
               <a href={`/work/${entry.slug}`} class="work__link">{linkLabel(entry)}</a>
@@ -90,7 +92,7 @@ const navItems = [
               <p class="work__description">{entry.description}</p>
               {!entry.image.includes('work-') && (
                 <div class="work__image">
-                  <img src={entry.image} alt={`${entry.company} project`} loading="lazy" />
+                  <img src={entry.image} alt={imgAlt(entry.image)} loading="lazy" width={imgDims(entry.image)?.width} height={imgDims(entry.image)?.height} />
                 </div>
               )}
               {hasProjectPage(entry) && (

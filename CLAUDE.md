@@ -87,7 +87,7 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 - Toggle button placed in side nav, mobile nav, and project pages
 - User preference persisted to `localStorage` under key `theme`
 
-## Session Recap (2026-04-08)
+## Session Recap (2026-04-10)
 
 ### What exists
 - **Main page** (`/`) — Hero, about, two content sections (Work + Projects), contact with sticky side nav and mobile nav. Nav links: Top, About, Work, Projects, Connect. Fixed "Design System" button (bottom-right). Work entry images have `border-radius: var(--radius-md)`.
@@ -104,34 +104,42 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
   - `work` — Professional entries shown in the Work section on the landing page
   - `projects` — Personal/side projects shown in the Projects section
   - `allEntries` — Combined array used by `[slug].astro` for `getStaticPaths()`
-- **`WorkEntry` interface** fields: `period`, `title`, `company`, `slug`, `description`, `image`, and optionally `projectDescription`, `projectHero`, `heroLandscape` (boolean, forces 16:9 crop on hero), `uniformImages` (boolean, forces 3:4 on gallery images), `galleryImages` (flat gallery array), `gallerySections` (grouped galleries with optional `title`, `text`, `images`, `alts`, `aspectRatio`), `galleryLayout` (`'stacked-right'`)
+- **`WorkEntry` interface** fields: `period`, `title`, `company`, `slug`, `description`, `image`, and optionally `projectDescription`, `projectHero`, `heroLandscape` (boolean, displays hero at natural aspect ratio), `uniformImages` (boolean, forces 3:4 on gallery images), `galleryImages` (flat gallery array), `gallerySections` (grouped galleries with optional `title`, `text`, `images`, `alts`, `aspectRatio`), `galleryLayout` (`'stacked-right'`)
 - **`GallerySection` interface** fields: `title?`, `text?`, `images`, `alts?`, `aspectRatio?` (inline CSS aspect-ratio per section, e.g. `'1/1'`)
 - `image` is used for the landing page thumbnail. Entries with `work-` in the image path are treated as placeholders (no image shown, no link in Projects section)
 - `projectDescription` falls back to `description` on the project page via `displayDescription`
 - Helper functions in index frontmatter: `hasProjectPage()` checks `projectDescription || projectHero`; `linkLabel()` returns "View use case →" or "View project →" based on case study data
 - **Important:** In `[slug].astro`, complex fields (`gallerySections`, `uniformImages`, `heroLandscape`, `galleryLayout`) must be read via `allEntries.find()`, NOT destructured from `Astro.props` (Astro prop serialization silently drops them)
 
+### Image utilities
+- **`src/data/image-dimensions.ts`** — Static map of image path → `[width, height]`. Exports `imgDims(src)` returning `{ width, height }`. Used by both `index.astro` and `[slug].astro` to add `width`/`height` attributes to all `<img>` tags (prevents CLS). Must be updated when adding new images.
+- **`src/data/image-alt.ts`** — Exports `imgAlt(src)` which converts image filenames into alt text (e.g. `/images/concession-holding-book.webp` → "Concession Holding Book"). Used as default alt across all templates. Explicit `alts` arrays in gallery sections take priority.
+
 ### Work section entries (landing page)
-1. **PayXpert** — Lead Designer, 2024–Present (image, **has case study**, "View use case →")
-2. **Oppressus** — Photoshoot & Video Production, 2024 (image, project page with hero + 6 gallery images, `uniformImages: true` → 3:4 aspect ratio)
-3. **Signature Spa Consulting** — In-House Designer, 2023–2024 (image, project page with hero + gallerySections: 3 sections with narrative text, descriptive captions, Photography section has `--cropped` images)
-4. **Lash Paris** — Content Creator & Designer, 2021–2023 (image, project page with hero + gallerySections: 3 narrative blocks with interleaved text and galleries)
+1. **PayXpert** — Lead Designer, 2024–Present (`payxpert.webp`, **has case study**, "View use case →")
+2. **Signature Spa Consulting** — In-House Designer, 2023–2024 (`signature-spa-gallery-01.webp`, project page with hero + gallerySections: 3 sections with narrative text, descriptive captions)
+3. **Lash Paris** — Content Creator & Designer, 2021–2023 (`lash-paris-hero.webp`, project page with hero + gallerySections: 3 narrative blocks with interleaved text and galleries)
 
 ### Projects section entries (landing page)
-1. **Concession Perpetuelle** — Photography & Editorial Design, 2024 (image, project page with landscape hero cover, gallerySections: Editorial design (4 images) + The printed book (4 images, `aspectRatio: '1/1'`))
-2. **Adobe & Scopio** — Creative Art Direction & Photography, April 2024 (**placeholder image**, no link, no project page content)
-3. **Toombstone Tavern** — Branding & Identity Design, 2023 (image, project page with hero + 5 gallery images)
-4. **364** — Art Direction, Photoshoot & Editorial, 2023 (image, project page with hero + 6 gallery images)
+1. **Concession Perpetuelle** — Photography & Editorial Design, 2024 (`concession-hero-thumb.webp` 800x533 14KB, project page with landscape hero `concession-hero-cover-r.webp` rotated 90° CW, gallerySections: Editorial design (4 images) + The printed book (4 images, `aspectRatio: '1/1'`))
+2. **Oppressus** — Photoshoot & Video Production, 2024 (`oppressus.webp`, project page with hero + 6 gallery images, `uniformImages: true` → 3:4 aspect ratio)
+3. **Adobe & Scopio** — Creative Art Direction & Photography, April 2024 (**placeholder image**, no link, no project page content)
+4. **Toombstone Tavern** — Branding & Identity Design, 2023 (`tombstone-hero.webp`, project page with hero + 5 gallery images)
+5. **364** — Art Direction, Photoshoot & Editorial, 2023 (`364-hero.webp`, project page with hero + 6 gallery images)
 
 ### Shared components
 - **`src/components/Contact.astro`** — Connect section (email, phone, LinkedIn, Instagram)
-- **`src/components/SideNav.astro`** — Desktop side nav, takes `items: { id, label }[]`
+- **`src/components/SideNav.astro`** — Desktop side nav, takes `items: { id, label }[]`, fade-in delay 0.9s
 - **`src/components/MobileNav.astro`** — Mobile top nav, takes `items: { id, label }[]`
 - **`src/components/ThemeToggle.astro`** — Dark mode toggle button (used by SideNav, MobileNav, and design system). Sun icon uses `U+FE0E` variation selector to prevent emoji rendering on iPad/iOS.
 
 ### Shared modules
 - **`src/scripts/scroll-spy.ts`** — Shared scroll-spy with floating dot, used by index, slug, and design-system pages
 - **`global.css`** — Self-hosted Quantico font (`public/fonts/`), shared styles, design tokens
+
+### Animations
+- **On-load cascade:** Hero (0s) → About (0.3s) → Work label + first project (0.6s) → Side nav (0.9s). Uses `.fade-in` class (opacity only, no translate).
+- **Scroll-triggered:** Remaining work entries and the Contact section fade-up (opacity + translateY 25px, 500ms) via `IntersectionObserver` with `threshold: 0.15`. Each element animates once.
 
 ### Image galleries (case study)
 - Sections can have `images?: string[]` in case study data
@@ -153,20 +161,9 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 - When `gallerySections` is used, the description section is hidden (text lives in the gallery sections instead)
 - Internal spacing uses `--space-content-gap` (2rem) between elements within a section
 
-### Key design tokens
-
-| Token | Value | Usage |
-|-------|-------|-------|
-| `--space-content-gap` | `2rem` | Gap between elements within a section |
-| `--space-md` | `2rem` | General medium spacing |
-| `--space-sm` | `1rem` | Small spacing, caption margins |
-
 ### Content style
 - No em dashes in prose/descriptions. Use commas, periods, or sentence restructuring instead.
 
 ### Still to do
-- Add `width`/`height` attributes to images (prevents CLS)
-- Add descriptive `alt` text to all gallery images (currently `alt=""`)
 - SEO improvements (personalized meta, OG tags, sitemap via `@astrojs/sitemap`, robots.txt, canonical URLs)
 - Add `<meta name="robots" content="noindex">` to `/design-system`
-- Replace Adobe & Scopio placeholder image with a real one (or add project page content)

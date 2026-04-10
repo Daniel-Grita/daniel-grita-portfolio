@@ -5,6 +5,8 @@ import SideNav from '../../components/SideNav.astro';
 import MobileNav from '../../components/MobileNav.astro';
 import { allEntries } from '../../data/work';
 import { caseStudies } from '../../data/case-studies';
+import { imgDims } from '../../data/image-dimensions';
+import { imgAlt } from '../../data/image-alt';
 
 export function getStaticPaths() {
   return allEntries.map((entry) => ({
@@ -43,7 +45,7 @@ const displayDescription = projectDescription || description;
         <!-- Hero image -->
         {image && !image.includes('work-') && (
           <div class="cs__hero fade-in">
-            <img src={image} alt={`${company} project`} />
+            <img src={image} alt={imgAlt(image)} width={imgDims(image)?.width} height={imgDims(image)?.height} />
           </div>
         )}
 
@@ -81,7 +83,7 @@ const displayDescription = projectDescription || description;
               <figure class="cs__figure">
                 <div class={`cs__gallery${section.uniformImages ? ' cs__gallery--uniform' : ''}${section.galleryLayout === 'stacked-right' ? ' cs__gallery--stacked-right' : ''}`}>
                   {section.images.map((src) => (
-                    <img src={src} alt="" loading="lazy" />
+                    <img src={src} alt={imgAlt(src)} loading="lazy" width={imgDims(src)?.width} height={imgDims(src)?.height} />
                   ))}
                 </div>
                 {section.imageCaption && (
@@ -135,7 +137,7 @@ const displayDescription = projectDescription || description;
 
         {projectHero && (
           <div class:list={['project__hero', { 'project__hero--landscape': heroLandscape }]}>
-            <img src={projectHero} alt={`${company} project`} />
+            <img src={projectHero} alt={imgAlt(projectHero)} width={imgDims(projectHero)?.width} height={imgDims(projectHero)?.height} />
           </div>
         )}
 
@@ -156,7 +158,7 @@ const displayDescription = projectDescription || description;
                 {section.text && <p class="project__gallery-text">{section.text}</p>}
                 <div class:list={['project__gallery', { 'project__gallery--single': section.images.length === 1 }]}>
                   {section.images.map((src: string, i: number) => (
-                    <img src={src} alt={section.alts?.[i] || ''} loading="lazy" style={section.aspectRatio ? `aspect-ratio: ${section.aspectRatio}` : undefined} />
+                    <img src={src} alt={section.alts?.[i] || imgAlt(src)} loading="lazy" width={imgDims(src)?.width} height={imgDims(src)?.height} style={section.aspectRatio ? `aspect-ratio: ${section.aspectRatio}` : undefined} />
                   ))}
                 </div>
                 {section.title && <p class="cs__caption">{section.title}</p>}
@@ -166,7 +168,7 @@ const displayDescription = projectDescription || description;
         ) : galleryImages && galleryImages.length > 0 ? (
           <div class:list={['project__gallery', { 'project__gallery--stacked-right': galleryLayout === 'stacked-right', 'project__gallery--uniform': uniformImages }]}>
             {galleryImages.map((src: string) => (
-              <img src={src} alt="" loading="lazy" />
+              <img src={src} alt={imgAlt(src)} loading="lazy" width={imgDims(src)?.width} height={imgDims(src)?.height} />
             ))}
           </div>
         ) : null}
