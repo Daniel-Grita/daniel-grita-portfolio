@@ -43,7 +43,7 @@ export const work: WorkEntry[] = [
   },
   {
     period: '2023 – 2024',
-    title: 'In-House Designer',
+    title: 'In-House Designer & Content Creator',
     company: 'Signature Spa Consulting',
     slug: 'signature-spa-consulting',
     description:
@@ -68,6 +68,7 @@ export const work: WorkEntry[] = [
       {
         text: 'This role was a major boost for my career, giving me the chance to take on many responsibilities, grow my skills, and get to know the beauty and holistic industry better. Here\'s a selection of photography from this period.',
         title: 'Selection of model photography for Signature Spa',
+        aspectRatio: '3/4',
         images: [
           '/images/signature-spa-hero.webp',
           '/images/signature-spa-gallery-02.webp',
@@ -84,7 +85,7 @@ export const work: WorkEntry[] = [
   },
   {
     period: '2021 – 2023',
-    title: 'Content Creator & Designer',
+    title: 'In-House Designer & Content Creator',
     company: 'Lash Paris',
     slug: 'lash-paris',
     description:
@@ -316,7 +317,7 @@ The Editorial and Editing process was fun and served as the glue for all the ele
     image: '/images/364-hero.webp',
 
     projectHero: '/images/364-hero.webp',
-    galleryAspectRatio: '4/5',
+    galleryAspectRatio: '1/1',
     galleryImages: [
       '/images/364-gallery-01.webp',
       '/images/364-gallery-02.webp',

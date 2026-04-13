@@ -91,44 +91,29 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 
 ### What landed this session
 
-**Three new projects added** to the `projects` array in `src/data/work.ts`:
-- **Chut** (2026), Brand Identity & Commercial Ad. Fictional fruit juice brand + AI generated ad. Has a 6-section narrative project page with bottles, labels+mockup, fridge+social gallery, the commercial video, the Webflow landing page, and a recap paragraph.
-- **Oakley** (2025), first AI video exercise, Sensory Overload.
-- **Cuerpo Habitable** (2026), fashion video filmed and edited for Bet.
+**Animation system overhaul across all pages.**
+- **Trigger timing:** IntersectionObserver `rootMargin` switched to `0px 0px -15% 0px` with `threshold: 0`. Elements now fade in when they're 15% of viewport-height into view instead of firing on the first pixel or requiring 15% of their own height. Applied in `index.astro`, `work/[slug].astro`, and `design-system.astro`.
+- **Granular scroll animations on simple project layout** (`work/[slug].astro`): instead of animating whole `project__content-block` containers, each `project__gallery-text` paragraph, gallery/video block, caption, and description paragraph gets its own `.animate` class. On-load cascade added: back link (0s) → header (0.15s) → hero/video (0.3s) via `fade-in`.
+- **Projects section no longer stalls 600ms on scroll-in:** `.work { transition-delay: 0.6s }` was leaking onto `#projects` because both had `class="section work"`. Scoped to `#work` only.
+- **Design system granularity:** `.animate` moved from `.ds__section` containers down to each title, note, color card, type row, spacing row, layout row, component block, and state row.
 
-**Video pipeline set up:**
-- FFmpeg 8.1 confirmed working in shell.
-- Source videos re-encoded (H.264 CRF 23, AAC 128k, faststart) to `public/videos/`:
-  - `chut.mp4` (14 MB, from 89 MB)
-  - `oakley.mp4` (18 MB, from 43 MB)
-  - `cuerpo-habitable.mp4` (47 MB, from 148 MB, kept 1080p60)
-- Poster JPGs extracted for each.
-- Source files are in `C:/Users/Danie/Downloads/wetransfer_cuerpo-habitable-mp4_2026-04-08_2027/` (Chut images folder too).
+**New field `WorkEntry.galleryAspectRatio?: string`** in `src/data/work.ts`. When set, every `<img>` in the entry's `galleryImages` gets an inline `aspect-ratio` style (relies on existing global `object-fit: cover`). `364` uses `4/5` to force matched heights across its paired rows. Different from the existing per-section `GallerySection.aspectRatio` (gallerySections) and from `uniformImages` (which forces `3/4`).
 
-**Data model changes (`src/data/work.ts`):**
-- New `HeroVideo` interface; `WorkEntry.heroVideo?: HeroVideo` — used by Oakley and Cuerpo Habitable for their hero videos.
-- `GallerySection` gained `video?: { src; poster }` for mixed-media sections.
+**Placeholder branch removed.** `GallerySection.placeholder?: boolean` and the `.project__placeholder` render path + CSS are gone. Sections with empty `images` and no `video` now render as text-only (used by Chut's recap section). Also dropped orphan CSS.
 
-**Template changes (`src/pages/work/[slug].astro`):**
-- Renders inline `<video controls preload="metadata" playsinline poster=...>` (no lightbox for video, click the native play button to play in place).
-- Supports `section.video` and `section.placeholder` in gallery sections.
-- Captions (`section.title`) now render under both images and videos.
-- Lightbox remains for images only.
-- Styles: `.project__video`, `.project__placeholder`.
+**Copy updates.**
+- About paragraph rewritten (`src/pages/index.astro`): "over 10 years" (was 5), added a generalist paragraph mentioning AI, Web Design, Photography, Video. Street Art origin moved to second paragraph.
+- Concession Perpetuelle homepage card image → `concession-mistery-section.webp` (the "The Mistery 4" spiral-bound spread). `concession-hero-thumb.webp` is now unused except for its `image-dimensions.ts` entry.
+- Lash Paris homepage card image → `lash-paris-gallery-03.webp` (Yazmin box).
 
-**Dimensions (`src/data/image-dimensions.ts`):** entries added for all new webp images and the three video posters (CLS-safe).
+**Chut image audit:** left alone. All six webp files are 85–131 KB at 1920w quality 82, which is appropriate for the ~1000px column display. Going lower would risk banding on fruit/liquid gradients.
 
-**Homepage:** `hasProjectPage` predicate extended to include `heroVideo` so new project cards link through.
+**Commit:** `158b4b2` — pushed to `master`.
 
-### Copy rules (new)
-- **No em dashes in any site copy.** Saved to memory as `feedback_no_em_dashes.md`. Year ranges now use en dash (`2024 – Present`), page titles use `|` or `·`. CSS comment headers still contain em dashes but are not user-facing.
+### Outstanding
 
-### Outstanding work for next session
-
-1. **Optimise all images added this session.** The Chut webp files (bottles, labels, fridge, social, hero, landing) were all scaled to 1920w at quality 82 straight from 8000×4500 JPGs, but have not been audited. Check file sizes vs. visual quality, and see if quality 75 or smaller widths hold up. Same for the video posters.
-2. **Simplify the code of the last session.** The `[slug].astro` gallery section render now has three branches (`section.video` / `section.placeholder` / `section.images`) plus a caption check. Worth a pass to see if it can collapse cleanly. Also `heroVideo` support is still in the template but no entry currently uses it, so either wire it back in (Oakley / Cuerpo Habitable as hero video) or remove it.
-3. **Loading animations for the new project pages.** The Chut page has six sections rendered via the `gallerySections` map, each using the existing `.animate` / scroll-spy pattern. Verify the on-load cascade and scroll-triggered fade-ups feel right with the longer flow, and that Oakley / Cuerpo Habitable (which currently have nothing but the hero video) don't feel static.
-
-### Still to do after the above
-- SEO pass (personalized meta, OG tags, sitemap via `@astrojs/sitemap`, robots.txt, canonical URLs).
-- Chut: extract more images from the brand guidelines PDF if we want to flesh the page out further.
+1. **SEO pass.** Personalized meta, OG tags, sitemap via `@astrojs/sitemap`, `robots.txt`, canonical URLs. Not started.
+2. **Cleanup candidate:** `concession-hero-thumb.webp` is now unused as a display image. The file and its `image-dimensions.ts` entry could be deleted — didn't do it this session to avoid scope creep.
+3. **Chut:** flesh out the page further with more images from the brand guidelines PDF if desired.
+4. **364 aspect-ratio tuning:** set to `4/5` this session. May want to revisit after looking at the live page — easy to bump to `3/4`, `5/6`, `1/1`.
+5. **Page transitions:** add animations between pages (home ↔ project pages). Astro's `<ClientRouter />` view transitions are the natural fit — would smooth the current hard cuts on navigation.

@@ -67,8 +67,8 @@ const navItems = [
           {work.map((entry, i) => (
             <article class={`work__entry ${i === 0 ? 'fade-in' : 'animate'}`}>
               <span class="work__period">{entry.period}</span>
-              <h3 class="work__title">{entry.title}</h3>
-              <span class="work__company">{entry.company}</span>
+              <h3 class="work__title">{entry.company}</h3>
+              <span class="work__company">{entry.title}</span>
               <p class="work__description">{entry.description}</p>
               {!entry.image.includes('work-') && (
                 <div class="work__image">
@@ -88,8 +88,8 @@ const navItems = [
           {projects.map((entry) => (
             <article class="work__entry animate">
               <span class="work__period">{entry.period}</span>
-              <h3 class="work__title">{entry.title}</h3>
-              <span class="work__company">{entry.company}</span>
+              <h3 class="work__title">{entry.company}</h3>
+              <span class="work__company">{entry.title}</span>
               <p class="work__description">{entry.description}</p>
               {!entry.image.includes('work-') && (
                 <div class="work__image">
