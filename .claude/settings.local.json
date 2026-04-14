@@ -21,7 +21,15 @@
       "WebFetch(domain:localhost)",
       "Bash(ffmpeg:*)",
       "Bash(ffprobe -v error -show_entries stream=width,height -of default=nw=1 '/c/Users/Danie/Downloads/wetransfer_cuerpo-habitable-mp4_2026-04-08_2027/Chut Images/Page 12 of the Chut Brand Guidelines - Commercial Images of the 3 Products-14.jpg')",
-      "Bash(ffprobe -v error -show_entries stream=width,height -of default=nw=1 '/c/Users/Danie/Downloads/wetransfer_cuerpo-habitable-mp4_2026-04-08_2027/Chut Images/Page 14 of the Chut Brand Guidelines - Landing page made for Chut.jpg')"
+      "Bash(ffprobe -v error -show_entries stream=width,height -of default=nw=1 '/c/Users/Danie/Downloads/wetransfer_cuerpo-habitable-mp4_2026-04-08_2027/Chut Images/Page 14 of the Chut Brand Guidelines - Landing page made for Chut.jpg')",
+      "Bash(npx --yes sharp-cli@5 -i public/images/chut-hero.jpg -o public/images/ -f webp -- resize 1920 --withoutEnlargement)",
+      "Bash(rm public/images/chut-hero.jpg)",
+      "Bash(node -e \"const s=require\\('sharp'\\);s\\('public/images/chut-hero.webp'\\).metadata\\(\\).then\\(m=>console.log\\(m.width,m.height\\)\\)\")",
+      "Bash(node -e \"const s=require\\('sharp'\\);s\\('public/images/signature-spa-gallery-05.webp'\\).metadata\\(\\).then\\(m=>console.log\\(m.width,m.height,m.width/m.height\\)\\)\")",
+      "Bash(awk '{print $5, $9}')",
+      "Bash(powershell -c \"Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force\")",
+      "Bash(kill %1)",
+      "Bash(pkill -f \"astro dev\")"
     ]
   }
 }

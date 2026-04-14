@@ -1,10 +1,22 @@
 ---
 interface Props {
   title?: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
   noindex?: boolean;
 }
 
-const { title = 'Designer | Portfolio', noindex = false } = Astro.props;
+const {
+  title = 'Daniel Grita | Graphic and Web Design based in Barcelona',
+  description = 'Daniel Grita, Graphic and Web Design based in Barcelona. Portfolio of graphic design, web design, creative direction, and photography work.',
+  ogImage = '/images/payxpert.webp',
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://danielgrita.com').href;
+const ogImageURL = new URL(ogImage, Astro.site ?? 'https://danielgrita.com').href;
 ---
 
 <!doctype html>
@@ -13,11 +25,30 @@ const { title = 'Designer | Portfolio', noindex = false } = Astro.props;
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Designer specializing in fintech, UI/UX, and graphic design." />
+    <meta name="description" content={description} />
+    <meta name="author" content="Daniel Grita" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121412" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href={canonicalURL} />
     <link rel="preload" href="/fonts/quantico-regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/quantico-bold.woff2" as="font" type="font/woff2" crossorigin />
     <title>{title}</title>
-    {noindex && <meta name="robots" content="noindex" />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Daniel Grita" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <script is:inline>
       (function () {
         const saved = localStorage.getItem('theme');

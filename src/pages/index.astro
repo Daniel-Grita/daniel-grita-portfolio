@@ -21,7 +21,25 @@ const navItems = [
 ];
 ---
 
-<Layout title="Designer | Portfolio">
+<Layout
+  title="Daniel Grita | Graphic and Web Design based in Barcelona"
+  description="Portuguese visual artist based in Barcelona. Portfolio of graphic design, web design, creative direction, and photography across fintech, beauty, and editorial work."
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Daniel Grita',
+    jobTitle: 'Graphic and Web Designer',
+    description: 'Portuguese visual artist based in Barcelona, working in graphic design, web design, and creative direction.',
+    url: Astro.site?.href,
+    nationality: 'Portuguese',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Barcelona',
+      addressCountry: 'ES',
+    },
+    knowsAbout: ['Graphic Design', 'Web Design', 'Creative Direction', 'Photography', 'Art Direction', 'UI/UX Design'],
+  })} />
   <div id="top"></div>
 
   <MobileNav items={navItems} />

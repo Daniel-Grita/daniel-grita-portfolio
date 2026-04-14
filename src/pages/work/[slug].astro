@@ -25,9 +25,19 @@ const heroLandscape = entry?.heroLandscape;
 const heroVideo = entry?.heroVideo;
 const caseStudy = caseStudies[slug];
 const displayDescription = projectDescription || description;
+
+const stripTags = (s: string) => s.replace(/<[^>]*>/g, '');
+const truncate = (s: string, n: number) => s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s;
+const metaDescription = truncate(stripTags(description), 160);
+const ogImage = projectHero || (image && !image.includes('work-') ? image : undefined);
 ---
 
-<Layout title={`${company} | Daniel Grita`}>
+<Layout
+  title={`${company} | Daniel Grita`}
+  description={metaDescription}
+  ogImage={ogImage}
+  ogType="article"
+>
   {caseStudy ? (
     <!-- Case study layout -->
     <div id="top"></div>
