@@ -25,7 +25,6 @@ const { items } = Astro.props;
       display: flex;
       position: sticky;
       top: 0;
-      justify-content: center;
       align-items: center;
       gap: var(--space-sm);
       padding: 0 var(--space-sm);
@@ -34,6 +33,11 @@ const { items } = Astro.props;
       z-index: 100;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .mobile-nav::-webkit-scrollbar {
+      display: none;
     }
 
     .mobile-nav__link {

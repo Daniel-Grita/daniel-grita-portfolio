@@ -87,39 +87,19 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 - Toggle button placed in side nav, mobile nav, and project pages
 - User preference persisted to `localStorage` under key `theme`
 
-## Session Recap (2026-04-20)
+## Session Recap (2026-04-24)
 
 ### What landed this session
 
-**Body font reverted: Chillax → Quantico.** Kept Nippo for display.
-- `global.css` — removed Chillax from Fontshare `@import`; re-added 4 Quantico `@font-face` blocks (regular / italic / bold / bold-italic). `--font-sans` back to `'Quantico', ...`.
-- `Layout.astro` — re-added Quantico regular + bold `<link rel="preload">`.
-- Removed `strong { font-weight: 500 }` rule — Chillax was too heavy at 700, Quantico Bold reads fine at default weight.
-- Orphaned Quantico files: no longer orphaned ✅
+**PayXpert whitepaper link.** Moved `White Paper - Beyond the forms.pdf` to `public/docs/payxpert-whitepaper-beyond-the-forms.pdf`. Added optional `link?: { text: string; href: string }` field to `CaseStudySection` interface. Wired up "Read the whitepaper here" (opens in new tab) in the Print section of the PayXpert case study. Added `.cs__link` style in `[slug].astro`.
 
-**SideNav theme toggle alignment fix.** Moon/sun icon was center-justified while nav links were right-aligned. Added `.side-nav .theme-toggle { justify-content: flex-end; padding: 0.125rem 0 }` scoped override. Mobile nav untouched.
+**Signature Spa copy expanded.** Updated two `gallerySections` text blocks in `src/data/work.ts`:
+- Social media section now covers full channel management (Instagram, LinkedIn), paid ad strategies, and seasonal campaigns.
+- Photography section now calls out model sourcing, casting, and on-set direction.
 
-**`.ds-link` refinements.**
-- Removed `&larr;` arrow prefix from "Portfolio" text (both live floating button and the design-system preview).
-- Padding adjusted to `0.25rem 0.75rem` to match `.section__label` / `.ds__section-title` box.
-- `min-height: 44px` retained (WCAG 2.5.8 touch target). Content centered via flex.
+**Image background darkened.** `--color-img-bg` nudged from `#f5f5f5` → `#ebebeb` in `global.css` (light mode only; dark mode unchanged).
 
-**Plugin / MCP cleanup.**
-- Uninstalled plugins: `figma@claude-plugins-official`, `code-review@claude-plugins-official`, `frontend-design@claude-plugins-official` (the 17 design skills live in `~/.claude/skills/` independently of the plugin, so they still work).
-- Removed MCP: `figma-remote-mcp`.
-- Remaining plugin: `code-simplifier@claude-plugins-official`.
-- Can't remove via CLI: `claude.ai Google Drive` MCP — synced from claude.ai account; user needs to disconnect via claude.ai settings or Claude Desktop.
-
-**`/simplify` pass.**
-- **Render-blocking `@import` → `<link>`.** Moved Fontshare URL from `global.css` `@import` to a `<link rel="stylesheet">` in `Layout.astro`'s `<head>`. `@import` inside the main stylesheet serialized the request (browser had to parse CSS before discovering Nippo), defeating the `preconnect`. Now the font request parallelizes with CSS parse.
-- **Scroll-spy efficiency.** `src/scripts/scroll-spy.ts`:
-  - Extracted `isAtBottom()` helper (DRY — was computed in two places).
-  - Added `lastCurrentId` change-detection guard at top of `updateActiveNav` — early return on no-op IO callbacks, skipping `classList` + `positionDot` work.
-  - Scroll listener now tracks `wasAtBottom` and only calls `updateActiveNav` on transition into/out of the bottom band (not every tick while at bottom).
-  - Resize listener rAF-throttled via `resizePending` flag, and reduced to a new `repositionDots()` helper (resize only affects dot positioning, not active section).
-- **Touch-target tokens.** Added `--touch-target-min: 44px` and `--touch-target-compact: 24px` to `:root`. Swapped 8 hardcoded occurrences across `global.css`, `SideNav`, `MobileNav`, `design-system`, `[slug].astro` (including `min-width` on `.theme-toggle` variants).
-- **Deleted 4 narration comments.** `<!-- Contact (site-level footer landmark, outside <main>) -->` (×3 across `index.astro` and `[slug].astro`) and `<!-- Shared Connect / Contact footer -->` in `Contact.astro`. The `<footer>` tag carries the meaning.
-- **Skipped (documented):** rename `.ds-link` → `.chip-link` (naming debate, not a bug); consolidate design-system nav previews into real components (deeper restructure, risks breaking samples); extract `<Lightbox />` component (pre-existing, not in diff); scroll-spy teardown (no client-side routing currently); `activeMap` → single `currentActiveId` (current semantics depend on the map).
+**MobileNav scroll fix.** Removed `justify-content: center` from `.mobile-nav` — it was fighting `overflow-x: auto` on long nav bars (e.g. PayXpert's 9 items), clipping items off-screen. Items now left-align and scroll. Added `scrollbar-width: none` + `::-webkit-scrollbar { display: none }` to keep the bar visually clean.
 
 ### Outstanding (priority order)
 

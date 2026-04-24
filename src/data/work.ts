@@ -60,13 +60,13 @@ export const work: WorkEntry[] = [
         alts: ['Selection of 4 landing pages'],
       },
       {
-        text: 'I also created content for our social media platforms like Instagram and LinkedIn, and developed brand and marketing strategies, including campaigns for occasions like Valentine\'s Day and Christmas.',
+        text: 'Beyond design, I managed our social media channels on Instagram and LinkedIn end to end, from content creation to scheduling and community management. I also led full marketing campaigns and paid ad strategies, including seasonal pushes for occasions like Valentine\'s Day and Christmas.',
         title: 'Selection of social media posts made for Signature Spa',
         images: ['/images/signature-spa-gallery-06.webp'],
         alts: ['Selection of instagram posts'],
       },
       {
-        text: 'This role was a major boost for my career, giving me the chance to take on many responsibilities, grow my skills, and get to know the beauty and holistic industry better. Here\'s a selection of photography from this period.',
+        text: 'I was also responsible for our model shoots from start to finish, sourcing and inviting the models, organising the casting, and directing on set. Here\'s a selection of photography from this period.',
         title: 'Selection of model photography for Signature Spa',
         aspectRatio: '3/4',
         images: [

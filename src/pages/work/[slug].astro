@@ -80,6 +80,10 @@ const ogImage = projectHero || (image && !image.includes('work-') ? image : unde
               </div>
             )}
 
+            {section.link && (
+              <a class="cs__link" href={section.link.href} target="_blank" rel="noopener noreferrer">{section.link.text}</a>
+            )}
+
             {section.cards && (
               <div class={`cs__cards ${section.cards.length === 2 ? 'cs__cards--two' : ''}`}>
                 {section.cards.map((card) => (
@@ -324,6 +328,20 @@ const ogImage = projectHero || (image && !image.includes('work-') ? image : unde
 
   .cs__body p {
     line-height: 1.7;
+  }
+
+  .cs__link {
+    display: inline-block;
+    margin-top: var(--space-sm);
+    font-size: 0.9375rem;
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+
+  .cs__link:hover {
+    color: var(--color-hover);
   }
 
   /* ------------------------------------------------

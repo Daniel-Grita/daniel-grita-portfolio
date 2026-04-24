@@ -8,6 +8,7 @@ export interface CaseStudySection {
   label?: string;
   title?: string;
   body?: string;
+  link?: { text: string; href: string };
   highlight?: string;
   cards?: CaseStudyCard[];
   images?: string[];
@@ -158,6 +159,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         label: 'Print & Technical Materials',
 
         body: 'Brochures, flyers, and whitepapers needed to deliver in-depth technical and regulatory information without sacrificing visual appeal.',
+        link: { text: 'Read the whitepaper here', href: '/docs/payxpert-whitepaper-beyond-the-forms.pdf' },
         cards: [
           {
             title: 'Refined Readability',
