@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Contact from '../components/Contact.astro';
 import SideNav from '../components/SideNav.astro';
 import MobileNav from '../components/MobileNav.astro';
-import { work, projects } from '../data/work';
+import { work, projects, exhibitions } from '../data/work';
 import type { WorkEntry } from '../data/work';
 import { caseStudies } from '../data/case-studies';
 import { imgDims } from '../data/image-dimensions';
@@ -17,6 +17,7 @@ const navItems = [
   { id: 'about', label: 'About' },
   { id: 'work', label: 'Work' },
   { id: 'projects', label: 'Projects' },
+  { id: 'exhibitions', label: 'Exhibitions' },
   { id: 'connect', label: 'Connect' },
 ];
 ---
@@ -104,6 +105,29 @@ const navItems = [
         <h2 class="section__label">Projects</h2>
         <div class="work__list">
           {projects.map((entry) => (
+            <article class="work__entry animate">
+              <span class="work__period">{entry.period}</span>
+              <h3 class="work__title">{entry.company}</h3>
+              <span class="work__company">{entry.title}</span>
+              <p class="work__description">{entry.description}</p>
+              {!entry.image.includes('work-') && (
+                <div class="work__image">
+                  <img src={entry.image} alt={imgAlt(entry.image)} loading="lazy" width={imgDims(entry.image)?.width} height={imgDims(entry.image)?.height} />
+                </div>
+              )}
+              {hasProjectPage(entry) && (
+                <a href={`/work/${entry.slug}`} class="work__link">{linkLabel(entry)}</a>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Exhibitions -->
+      <section class="section work animate" id="exhibitions">
+        <h2 class="section__label">Exhibitions</h2>
+        <div class="work__list">
+          {exhibitions.map((entry) => (
             <article class="work__entry animate">
               <span class="work__period">{entry.period}</span>
               <h3 class="work__title">{entry.company}</h3>

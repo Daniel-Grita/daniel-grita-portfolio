@@ -269,6 +269,40 @@ My role was to capture the essence of this concept through striking visuals that
     ],
   },
   {
+    period: '2024',
+    title: 'Modular Type Design',
+    company: 'UxU',
+    slug: 'uxu',
+    description:
+      'An experimental modular typeface drawing from futuristic aesthetics, built on a monospaced grid with geometric, unconventional forms.',
+    projectDescription: `Uxu is a personal project, an experimental modular typeface I built to push my own design boundaries and explore the line between ornament and legibility. The whole family sits on a monospaced grid, with every character sharing the same fixed width, and from that constraint I designed each glyph around sharp, geometric shapes pulled from a mix of futuristic, retro sci-fi and brutalist references.
+
+The real challenge was keeping the typeface readable. The forms are intricate and bold, with diamond and arrow motifs running through almost every letter, but each character still had to hold its function at small and large sizes. I worked through uppercase, lowercase, numerals and punctuation, refining the system until the rhythm carried cohesively across the entire family.
+
+To put the design into context, I built a series of editorial poster studies, putting Uxu to work at display sizes across different layouts and subjects. Seeing it run as headlines, body copy and captions was what confirmed the typeface had its own personality and worked as a real, usable family.`,
+    image: '/images/uxu-hero.webp',
+    projectHero: '/images/uxu-hero.webp',
+    heroLandscape: true,
+    gallerySections: [
+      {
+        text: `Uxu is an experimental modular typeface, built on a monospaced grid where every glyph is shaped around sharp, geometric forms pulled from futurist and retro sci-fi references. I wanted it to read like a set of futuristic runes, almost unreadable, leaning into ornament over function and pushing against the usual rules of legibility. I closed the project with a series of editorial poster studies, putting the typeface to work at display sizes to see how it carried across real layouts.`,
+        images: [],
+      },
+      {
+        title: 'Uppercase character set',
+        images: ['/images/uxu-uppercase.webp'],
+      },
+      {
+        title: 'Lowercase, symbols and numbers',
+        images: ['/images/uxu-lowercase.webp'],
+      },
+      {
+        title: 'Poster applications',
+        images: ['/images/uxu-applications.webp'],
+      },
+    ],
+  },
+  {
     period: 'April 2024',
     title: 'Creative Art Direction & Photography',
     company: 'Adobe & Scopio',
@@ -329,4 +363,6 @@ The Editorial and Editing process was fun and served as the glue for all the ele
   },
 ];
 
-export const allEntries = [...work, ...projects];
+export const exhibitions: WorkEntry[] = [];
+
+export const allEntries = [...work, ...projects, ...exhibitions];

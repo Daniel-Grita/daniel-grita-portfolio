@@ -46,7 +46,27 @@
       "Bash(git -C \"C:/Users/Danie/Desktop/Projects/Web/Daniel Grita Portfolio\" diff -- src/)",
       "Read(//tmp/**)",
       "Bash(git -C \"C:/Users/Danie/Desktop/Projects/Web/Daniel Grita Portfolio\" diff -- src/pages/ src/components/)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(mkdir -p \"public/docs\")",
+      "Bash(mv \"public/White Paper - Beyond the forms.pdf\" \"public/docs/payxpert-whitepaper-beyond-the-forms.pdf\")",
+      "Bash(git commit *)",
+      "PowerShell(Join-Path *)",
+      "PowerShell(Get-Command *)",
+      "Bash(node -e \"console.log\\(require.resolve\\('sharp'\\)\\)\")",
+      "Bash(node -e ' *)",
+      "PowerShell(Get-Process *)",
+      "Bash(npm audit *)",
+      "Bash(cwebp -version)",
+      "Bash(magick -version)",
+      "Bash(mkdir -p public/videos/_backup)",
+      "Bash(cp public/videos/*.mp4 public/videos/_backup/)",
+      "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,duration,bit_rate,codec_name -of default=nw=1 public/videos/_backup/chut.mp4)",
+      "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,duration,bit_rate,codec_name -of default=nw=1 public/videos/_backup/cuerpo-habitable.mp4)",
+      "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height,duration,bit_rate,codec_name -of default=nw=1 public/videos/_backup/oakley.mp4)",
+      "Bash(mkdir -p public/images/_backup)",
+      "Bash(cp public/images/uxu-applications.webp public/images/uxu-hero.webp public/images/uxu-lowercase.webp public/images/uxu-uppercase.webp public/images/_backup/)",
+      "Bash(git reset *)"
     ]
   }
 }
