@@ -73,7 +73,7 @@ const dims: Record<string, [number, number]> = {
   '/images/tombstone-gallery-07.webp': [1600, 876],
   '/images/tombstone-hero.webp': [3466, 1981],
   '/images/anonymous-hero.webp': [1600, 900],
-  '/images/anonymous-card.webp': [1600, 765],
+  '/images/anonymous-card.webp': [1600, 720],
   '/images/anonymous-gallery-01.webp': [1600, 900],
   '/images/anonymous-gallery-02.webp': [1600, 900],
   '/images/anonymous-gallery-03.webp': [1600, 900],

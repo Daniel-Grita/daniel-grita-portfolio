@@ -112,7 +112,7 @@ const navItems = [
               <p class="work__description">{entry.description}</p>
               {!entry.image.includes('work-') && (
                 <div class="work__image">
-                  <img src={entry.image} alt={imgAlt(entry.image)} loading="lazy" width={imgDims(entry.image)?.width} height={imgDims(entry.image)?.height} />
+                  <img src={entry.cardImage ?? entry.image} alt={imgAlt(entry.cardImage ?? entry.image)} loading="lazy" width={imgDims(entry.cardImage ?? entry.image)?.width} height={imgDims(entry.cardImage ?? entry.image)?.height} />
                 </div>
               )}
               {hasProjectPage(entry) && (
