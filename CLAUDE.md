@@ -87,19 +87,34 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 - Toggle button placed in side nav, mobile nav, and project pages
 - User preference persisted to `localStorage` under key `theme`
 
-## Session Recap (2026-04-24)
+## Session Recap (2026-05-20)
 
 ### What landed this session
 
-**PayXpert whitepaper link.** Moved `White Paper - Beyond the forms.pdf` to `public/docs/payxpert-whitepaper-beyond-the-forms.pdf`. Added optional `link?: { text: string; href: string }` field to `CaseStudySection` interface. Wired up "Read the whitepaper here" (opens in new tab) in the Print section of the PayXpert case study. Added `.cs__link` style in `[slug].astro`.
+**Security + bloat sweep.** Full audit pass on the live site, four fixes committed in `77de6cc` and pushed to `master`.
 
-**Signature Spa copy expanded.** Updated two `gallerySections` text blocks in `src/data/work.ts`:
-- Social media section now covers full channel management (Instagram, LinkedIn), paid ad strategies, and seasonal campaigns.
-- Photography section now calls out model sourcing, casting, and on-set direction.
+**`npm audit fix`.** Patched dev-time vite (3 highs) + postcss (1 moderate). The 3 remaining `path-to-regexp` highs are inside `@astrojs/vercel`'s build chain — only fixable via major downgrade to `@astrojs/vercel@8`, left alone since they're build-time only and Vercel patches their own runtime.
 
-**Image background darkened.** `--color-img-bg` nudged from `#f5f5f5` → `#ebebeb` in `global.css` (light mode only; dark mode unchanged).
+**Video re-encoding (76 MB → 25 MB).** Used ffmpeg with `libx264 -crf 28 -preset slow`, scaled to max 1280w, `+faststart` for instant playback, AAC 96k stereo.
+- `chut.mp4`: 14 MB → 4.4 MB
+- `cuerpo-habitable.mp4`: 45 MB → 12 MB
+- `oakley.mp4`: 18 MB → 9 MB
 
-**MobileNav scroll fix.** Removed `justify-content: center` from `.mobile-nav` — it was fighting `overflow-x: auto` on long nav bars (e.g. PayXpert's 9 items), clipping items off-screen. Items now left-align and scroll. Added `scrollbar-width: none` + `::-webkit-scrollbar { display: none }` to keep the bar visually clean.
+**UxU image re-compression.** Used sharp via node, resized 8000w sources to 1600w WebP at q72–78.
+- `uxu-applications.webp`: 2.3 MB → 51 KB
+- `uxu-hero.webp`: 670 KB → 35 KB
+- `uxu-lowercase.webp`: 159 KB → 17 KB
+- `uxu-uppercase.webp`: 151 KB → 16 KB
+
+**`vercel.json` security headers.** New file at repo root. HSTS (2yr preload), `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` denying camera/mic/geo/payment/usb/FLoC, and a CSP allowing self + Fontshare. Bonus: 1-year immutable `Cache-Control` for woff2/webp/avif/jpg/jpeg/png/svg/mp4/pdf.
+
+**Exhibitions section wired up.** New `#exhibitions` section on `src/pages/index.astro` rendering the `exhibitions` array from `src/data/work.ts`. Added to `navItems` between Projects and Connect.
+
+**Gitignore additions.** `.impeccable.md` (skill scratch) and `public/**/_backup/` (asset rollback dirs created during compression, since deleted).
+
+### CSP caveat
+
+`'unsafe-inline'` is in `script-src` because of the inline theme-toggle script in `Layout.astro:55-63` and the JSON-LD `set:html` block in `index.astro:29`. If analytics or a third-party widget is added later, whitelist its domain in `script-src` / `connect-src`.
 
 ### Outstanding (priority order)
 
@@ -113,3 +128,4 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 
 - **Page transitions (deferred).** Fresh attempt options when revisited: chartreuse wipe panel, blocky grid reveal, monospace scramble for titles.
 - **Disconnect Google Drive MCP** via claude.ai settings (can't remove via CLI).
+- **Re-encoded video QA.** Visual review on production was skipped — if any of the three MP4s look soft, originals are gone but encode params are documented above; re-export from source at higher CRF (e.g. 24).

@@ -214,7 +214,7 @@ const ogImage = projectHero || (image && !image.includes('work-') ? image : unde
             ))}
           </section>
         ) : galleryImages && galleryImages.length > 0 ? (
-          <div class:list={['project__gallery animate', { 'project__gallery--stacked-right': galleryLayout === 'stacked-right', 'project__gallery--uniform': uniformImages }]}>
+          <div class:list={['project__gallery animate', galleryLayout && `project__gallery--${galleryLayout}`, { 'project__gallery--uniform': uniformImages }]}>
             {galleryImages.map((src: string) => (
               <img src={src} alt={imgAlt(src)} loading="lazy" width={imgDims(src)?.width} height={imgDims(src)?.height} style={galleryAspectRatio ? `aspect-ratio: ${galleryAspectRatio}` : undefined} />
             ))}

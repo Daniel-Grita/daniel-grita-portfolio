@@ -23,9 +23,10 @@ export interface WorkEntry {
   projectHero?: string;
   heroVideo?: HeroVideo;
   heroLandscape?: boolean;
+  cardImage?: string;
   uniformImages?: boolean;
   galleryImages?: string[];
-  galleryLayout?: 'stacked-right';
+  galleryLayout?: 'stacked-right' | 'single';
   galleryAspectRatio?: string;
   gallerySections?: GallerySection[];
 }
@@ -303,6 +304,30 @@ To put the design into context, I built a series of editorial poster studies, pu
     ],
   },
   {
+    period: '2024',
+    title: 'Visual Identity',
+    company: 'Anonymous Cocina',
+    slug: 'anonymous-cocina',
+    description:
+      'A visual identity for a home-cook friend running a small catering operation. He cooked a weekly menu out of his kitchen and skated around town delivering orders.',
+    projectDescription: `A visual identity for a home-cook friend running a small catering operation out of Barcelona. Each week he posted a new menu, cooked everything himself, and skated around town delivering orders by hand.
+
+The brand needed to feel scrappy, personal, and a little punk to match how the operation actually ran. I built a wordmark with a bouncy, hand-drawn weight and a skater-cook mascot that carries the food across menus, packaging, and apparel.
+
+A bright palette of yellow, pink, and ink blue keeps the marks loud on takeout bags, boxes, and stickers, while the dark base ties the system together when it shows up on tees or printed menus.`,
+    image: '/images/anonymous-hero.webp',
+    cardImage: '/images/anonymous-card.webp',
+    projectHero: '/images/anonymous-hero.webp',
+    galleryLayout: 'single',
+    galleryImages: [
+      '/images/anonymous-gallery-01.webp',
+      '/images/anonymous-gallery-02.webp',
+      '/images/anonymous-gallery-03.webp',
+      '/images/anonymous-gallery-04.webp',
+      '/images/anonymous-gallery-05.webp',
+    ],
+  },
+  {
     period: 'April 2024',
     title: 'Creative Art Direction & Photography',
     company: 'Adobe & Scopio',
@@ -326,12 +351,15 @@ I tried to maintain the old school vibe but adding a bit of current minimalistic
     image: '/images/tombstone-hero.webp',
 
     projectHero: '/images/tombstone-hero.webp',
+    galleryLayout: 'single',
     galleryImages: [
-      '/images/tombstone-gallery-01.webp',
-      '/images/tombstone-gallery-02.webp',
-      '/images/tombstone-gallery-04.webp',
       '/images/tombstone-gallery-05.webp',
+      '/images/tombstone-gallery-02.webp',
+      '/images/tombstone-gallery-01.webp',
+      '/images/tombstone-gallery-07.webp',
+      '/images/tombstone-gallery-06.webp',
       '/images/tombstone-gallery-03.webp',
+      '/images/tombstone-gallery-04.webp',
     ],
   },
   {

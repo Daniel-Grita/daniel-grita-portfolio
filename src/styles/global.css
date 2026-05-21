@@ -130,8 +130,8 @@ a:hover {
 }
 
 ::selection {
-  background: var(--color-text);
-  color: var(--color-bg);
+  background: var(--color-on-accent);
+  color: var(--color-accent);
 }
 
 /* ------------------------------------------------
