@@ -203,7 +203,7 @@ const ogImage = projectHero || (image && !image.includes('work-') ? image : unde
                     </video>
                   </div>
                 ) : section.images.length > 0 && (
-                  <div class:list={['project__gallery animate', { 'project__gallery--single': section.images.length === 1 }]}>
+                  <div class:list={['project__gallery animate', { 'project__gallery--single': section.images.length === 1 || section.layout === 'single' }]}>
                     {section.images.map((src: string, i: number) => (
                       <img src={src} alt={section.alts?.[i] || imgAlt(src)} loading="lazy" width={imgDims(src)?.width} height={imgDims(src)?.height} style={section.aspectRatio ? `aspect-ratio: ${section.aspectRatio}` : undefined} />
                     ))}

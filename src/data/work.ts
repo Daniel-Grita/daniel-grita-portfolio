@@ -4,6 +4,7 @@ export interface GallerySection {
   images: string[];
   alts?: string[];
   aspectRatio?: string;
+  layout?: 'single';
   video?: { src: string; poster: string };
 }
 
@@ -310,21 +311,26 @@ To put the design into context, I built a series of editorial poster studies, pu
     slug: 'anonymous-cocina',
     description:
       'A visual identity for a home-cook friend running a small catering operation. He cooked a weekly menu out of his kitchen and skated around town delivering orders.',
-    projectDescription: `A visual identity for a home-cook friend running a small catering operation out of Barcelona. Each week he posted a new menu, cooked everything himself, and skated around town delivering orders by hand.
-
-The brand needed to feel scrappy, personal, and a little punk to match how the operation actually ran. I built a wordmark with a bouncy, hand-drawn weight and a skater-cook mascot that carries the food across menus, packaging, and apparel.
-
-A bright palette of yellow, pink, and ink blue keeps the marks loud on takeout bags, boxes, and stickers, while the dark base ties the system together when it shows up on tees or printed menus.`,
     image: '/images/anonymous-hero.webp',
     cardImage: '/images/anonymous-card.webp',
     projectHero: '/images/anonymous-hero.webp',
-    galleryLayout: 'single',
-    galleryImages: [
-      '/images/anonymous-gallery-01.webp',
-      '/images/anonymous-gallery-02.webp',
-      '/images/anonymous-gallery-03.webp',
-      '/images/anonymous-gallery-04.webp',
-      '/images/anonymous-gallery-05.webp',
+    gallerySections: [
+      {
+        text: 'A visual identity for a home-cook friend running a small catering operation out of Barcelona. Each week he posted a new menu, cooked everything himself, and skated around town delivering orders by hand. The brand needed to feel scrappy, personal, and a little punk to match how the operation actually ran.',
+        images: [
+          '/images/anonymous-gallery-05.webp',
+          '/images/anonymous-gallery-03.webp',
+        ],
+      },
+      {
+        text: 'I built a wordmark with a bouncy, hand-drawn weight and a skater-cook mascot that carries the food across menus, packaging, and apparel. A bright palette of yellow, pink, and ink blue keeps the marks loud on takeout bags, boxes, and stickers, while the dark base ties the system together when it shows up on tees or printed menus.',
+        layout: 'single',
+        images: [
+          '/images/anonymous-gallery-01.webp',
+          '/images/anonymous-gallery-02.webp',
+          '/images/anonymous-gallery-04.webp',
+        ],
+      },
     ],
   },
   {
