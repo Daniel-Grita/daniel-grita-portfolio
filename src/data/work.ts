@@ -13,12 +13,15 @@ export interface HeroVideo {
   poster: string;
 }
 
+export type WorkCategory = 'Photography' | 'Design' | 'Video' | 'AI';
+
 export interface WorkEntry {
   period: string;
   title: string;
   company: string;
   slug: string;
   description: string;
+  categories: WorkCategory[];
   image: string;
   projectDescription?: string;
   projectHero?: string;
@@ -40,6 +43,7 @@ export const work: WorkEntry[] = [
     slug: 'payxpert',
     description:
       'Leading the design at PayXpert, an omnichannel payment solution based in France and Spain. Leading a comprehensive rebranding, transitioning the company from a fragmented identity to a modern, unified system. Balancing complex fintech technical requirements with clean, impactful aesthetics.',
+    categories: ['Design', 'AI'],
     image: '/images/payxpert.webp',
 
   },
@@ -51,6 +55,7 @@ export const work: WorkEntry[] = [
     description:
       'Worked as the in-house designer at Signature Spa Consulting, a luxury spa chain in Barcelona, Andorra, and Sitges. A major boost for my career, giving me the chance to take on many responsibilities, grow my skills, and get to know the beauty and holistic industry better.',
     projectDescription: `Throughout 2023 and 2024, I worked at Signature Spa Consulting, a luxury spa chain in Barcelona, Andorra, and Sitges. This role, as the in-house designer, was a major boost for my career, giving me the chance to take on many responsibilities and grow my skills and get to know the beauty and holistic industry better.`,
+    categories: ['Photography', 'Design', 'Video'],
     image: '/images/signature-spa-gallery-01.webp',
 
     projectHero: '/images/signature-spa-gallery-01.webp',
@@ -93,6 +98,7 @@ export const work: WorkEntry[] = [
     description:
       'Lash Paris, a beauty products company in Breda, Holland, was my introduction to the world of beauty, fashion, and content creation. During my two years there, I focused on creating content for the website and social media, showcasing products and their applications. Also gained my first experience managing photoshoots with models.',
     projectDescription: `Lash Paris, a beauty products company based in Breda, Holland, was my first step into the world of beauty and content creation. Over two years I shaped the brand's visual identity, from product photography and packaging to social media content and illustrated graphics.`,
+    categories: ['Photography', 'Design', 'Video'],
     image: '/images/lash-paris-gallery-03.webp',
 
     projectHero: '/images/lash-paris-hero.webp',
@@ -134,6 +140,7 @@ export const projects: WorkEntry[] = [
     description:
       'A branding exercise for a fictitious fruit juice brand, paired with a commercial ad built entirely with AI.',
     projectDescription: `A branding exercise for Chut, a fictitious fruit juice brand, paired with a commercial ad to bring the identity to life.`,
+    categories: ['Design', 'Video', 'AI'],
     image: '/images/chut-hero.webp',
     gallerySections: [
       {
@@ -181,6 +188,7 @@ export const projects: WorkEntry[] = [
 It was a fun project to take on. I always enjoy working in fashion, especially when it leans alternative and has a disruptive style to it. A big part of the work was scouting and adapting to the different locations, finding angles that matched the energy of the collection.
 
 I then pulled the whole piece together in Premiere Pro and After Effects, leaning on the edit and motion work to give the final video its rhythm and tone.`,
+    categories: ['Video'],
     image: '/videos/cuerpo-habitable-poster.jpg',
     heroVideo: {
       src: '/videos/cuerpo-habitable.mp4',
@@ -199,6 +207,7 @@ I then pulled the whole piece together in Premiere Pro and After Effects, leanin
 A friend had just bought this model of Oakley sunglasses and I thought it would be fun to build something around them. The main struggle was getting the AI to keep the model of the glasses true to the real thing without distorting the shape or the details. It took a lot of back and forth to land on takes that actually felt faithful to the product.
 
 In the end it was a fun project that opened a door for me into this AI world, and it set the stage for the bigger, more structured exercise I later did with Chut.`,
+    categories: ['Video', 'AI'],
     image: '/videos/oakley-poster.jpg',
     heroVideo: {
       src: '/videos/oakley.mp4',
@@ -217,6 +226,7 @@ In the end it was a fun project that opened a door for me into this AI world, an
 I designed this book as an exercise for practising my layout and editorial skills.
 
 To play around with different textures, colours and overlapping images/typography. Even though I am happy with this project, I intend to keep on working on it.`,
+    categories: ['Photography', 'Design'],
     image: '/images/concession-mistery-section.webp',
 
     projectHero: '/images/concession-hero-cover-r.webp',
@@ -257,6 +267,7 @@ To play around with different textures, colours and overlapping images/typograph
 Inspired by dark periods of life and brutalist architecture, the design features a powerful aesthetic with predominant shades of black and grey. Small details of light signify hope, offering a glimmer of brightness amidst the darkness.
 
 My role was to capture the essence of this concept through striking visuals that highlight the shoes' unique blend of resilience and elegance. Explore our collection to experience this compelling fusion of art and fashion.`,
+    categories: ['Photography', 'Design', 'Video'],
     image: '/images/oppressus.webp',
 
     projectHero: '/images/oppressus-hero.webp',
@@ -282,6 +293,7 @@ My role was to capture the essence of this concept through striking visuals that
 The real challenge was keeping the typeface readable. The forms are intricate and bold, with diamond and arrow motifs running through almost every letter, but each character still had to hold its function at small and large sizes. I worked through uppercase, lowercase, numerals and punctuation, refining the system until the rhythm carried cohesively across the entire family.
 
 To put the design into context, I built a series of editorial poster studies, putting Uxu to work at display sizes across different layouts and subjects. Seeing it run as headlines, body copy and captions was what confirmed the typeface had its own personality and worked as a real, usable family.`,
+    categories: ['Design'],
     image: '/images/uxu-hero.webp',
     projectHero: '/images/uxu-hero.webp',
     heroLandscape: true,
@@ -311,6 +323,7 @@ To put the design into context, I built a series of editorial poster studies, pu
     slug: 'anonymous-cocina',
     description:
       'A visual identity for a home-cook friend running a small catering operation. He cooked a weekly menu out of his kitchen and skated around town delivering orders.',
+    categories: ['Design'],
     image: '/images/anonymous-hero.webp',
     cardImage: '/images/anonymous-card.webp',
     projectHero: '/images/anonymous-hero.webp',
@@ -340,6 +353,7 @@ To put the design into context, I built a series of editorial poster studies, pu
     slug: 'adobe-scopio',
     description:
       'Spearheaded the visual narrative for Adobe\'s AI application, overseeing end-to-end production. Managed art direction, talent selection, and location scouting, while executing high-level photography and post-production to ensure a cohesive brand aesthetic.',
+    categories: ['Photography'],
     image: '/images/work-04.jpg',
   },
   {
@@ -354,6 +368,7 @@ To put the design into context, I built a series of editorial poster studies, pu
 I decided to create a mascot and several drawing styles for the brand, which was a common style used in that time. I designed several logos and menu using a consisting language and style throughout.
 
 I tried to maintain the old school vibe but adding a bit of current minimalistic design techniques and a simple colour scheme to fit in with the current landscape of the Restaurant Industry.`,
+    categories: ['Design'],
     image: '/images/tombstone-hero.webp',
 
     projectHero: '/images/tombstone-hero.webp',
@@ -382,6 +397,7 @@ In this magazine, we aimed to capture and portray the relatable emotions experie
 To authentically convey this sentiment, we conducted a photoshoot with a couple that we knew, utilizing analog photography to enhance the nostalgic and poignant feeling of the moment.
 
 The Editorial and Editing process was fun and served as the glue for all the elements.`,
+    categories: ['Photography', 'Design'],
     image: '/images/364-hero.webp',
 
     projectHero: '/images/364-hero.webp',

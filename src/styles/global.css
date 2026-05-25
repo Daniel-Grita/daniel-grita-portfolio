@@ -263,6 +263,12 @@ p {
   border-radius: var(--radius-sm);
   transition: opacity 0.2s ease;
   z-index: 50;
+  animation: ds-link-fade 0.5s ease 1.6s both;
+}
+
+@keyframes ds-link-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .ds-link:hover {

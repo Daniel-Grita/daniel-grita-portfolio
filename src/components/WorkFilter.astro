@@ -1,0 +1,226 @@
+---
+const filters: { value: string; label: string }[] = [
+  { value: 'all', label: 'All' },
+  { value: 'photography', label: 'Photography' },
+  { value: 'design', label: 'Design' },
+  { value: 'video', label: 'Video' },
+  { value: 'ai', label: 'AI' },
+];
+---
+
+<section class="section fade-in work-filter" id="work-filter" aria-label="Filter work by discipline">
+  <p class="work-filter__lead">Filter my work</p>
+  <div class="work-filter__pills" role="tablist">
+    {filters.map((f, i) => (
+      <button
+        type="button"
+        class={`work-filter__pill${i === 0 ? ' is-active' : ''}`}
+        role="tab"
+        data-filter={f.value}
+        aria-pressed={i === 0 ? 'true' : 'false'}
+      >{f.label}</button>
+    ))}
+  </div>
+  <p class="work-filter__live" aria-live="polite" aria-atomic="true"></p>
+</section>
+
+<style>
+  .work-filter {
+    padding-top: var(--space-xs);
+    margin-bottom: var(--space-md);
+    text-align: right;
+    transition-delay: 0.6s;
+  }
+
+  .work-filter__lead {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-sm);
+  }
+
+  .work-filter__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    justify-content: flex-end;
+  }
+
+  .work-filter__pill {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .work-filter__pill:hover {
+    border-color: var(--color-title);
+    color: var(--color-title);
+  }
+
+  .work-filter__pill.is-active {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  .work-filter__live {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 768px) {
+    .work-filter__pills {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding-bottom: 0.25rem;
+      margin: 0 calc(-1 * var(--space-sm));
+      padding-left: var(--space-sm);
+      padding-right: var(--space-sm);
+    }
+
+    .work-filter__pills::-webkit-scrollbar {
+      display: none;
+    }
+
+    .work-filter__pill {
+      flex-shrink: 0;
+    }
+  }
+</style>
+
+<style is:global>
+  /* !important beats the equal-specificity scoped selectors in index.astro. */
+  .work__entry.is-filter-hidden {
+    display: none !important;
+  }
+
+  .work__entry.is-filter-fading {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .section.is-filter-empty {
+    margin-bottom: 0 !important;
+  }
+
+  .section.is-filter-empty .section__label,
+  .section.is-filter-empty .work__list {
+    display: none !important;
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'work-filter';
+  const FADE_MS = 200;
+
+  const root = document.getElementById('work-filter');
+  if (root) {
+    const pills = root.querySelectorAll<HTMLButtonElement>('.work-filter__pill');
+    const live = root.querySelector<HTMLElement>('.work-filter__live');
+
+    const stored = (() => {
+      try { return localStorage.getItem(STORAGE_KEY); } catch { return null; }
+    })();
+
+    const initial = stored && [...pills].some((p) => p.dataset.filter === stored)
+      ? stored
+      : 'all';
+
+    // Tracks per-entry hide timeouts so a rapid filter change can cancel a stale hide
+    // before it locks a now-visible entry at display:none.
+    const pendingHides = new Map<HTMLElement, number>();
+
+    const updateSections = () => {
+      document.querySelectorAll<HTMLElement>('.work__list').forEach((list) => {
+        const hasVisible = [...list.children].some(
+          (c) => !c.classList.contains('is-filter-hidden'),
+        );
+        list.closest('section')?.classList.toggle('is-filter-empty', !hasVisible);
+      });
+    };
+
+    const applyFilter = (value: string, animate: boolean) => {
+      // Force every section/entry visible so IntersectionObserver-hidden elements
+      // (opacity:0 but still taking layout space) don't leave gaps between filtered results.
+      if (animate) {
+        document
+          .querySelectorAll<HTMLElement>('.section, .work__entry')
+          .forEach((el) => el.classList.add('is-visible'));
+      }
+
+      const entries = document.querySelectorAll<HTMLElement>('.work__entry[data-categories]');
+      let visibleCount = 0;
+
+      entries.forEach((el) => {
+        const cats = (el.dataset.categories ?? '').split(' ');
+        const matches = value === 'all' || cats.includes(value);
+        if (matches) visibleCount++;
+
+        const pending = pendingHides.get(el);
+        if (pending !== undefined) {
+          window.clearTimeout(pending);
+          pendingHides.delete(el);
+        }
+
+        if (matches) {
+          el.classList.remove('is-filter-hidden', 'is-filter-fading');
+          el.classList.add('is-visible');
+        } else if (animate) {
+          el.classList.add('is-filter-fading');
+          const id = window.setTimeout(() => {
+            el.classList.add('is-filter-hidden');
+            pendingHides.delete(el);
+          }, FADE_MS);
+          pendingHides.set(el, id);
+        } else {
+          el.classList.add('is-filter-hidden', 'is-filter-fading');
+        }
+      });
+
+      // Defer when animating so display:none applies after the fade-out completes.
+      if (animate) window.setTimeout(updateSections, FADE_MS + 10);
+      else updateSections();
+
+      if (live) {
+        const label = [...pills].find((p) => p.dataset.filter === value)?.textContent ?? '';
+        live.textContent = `Showing ${visibleCount} project${visibleCount === 1 ? '' : 's'} in ${label}.`;
+      }
+
+      pills.forEach((p) => {
+        const on = p.dataset.filter === value;
+        p.classList.toggle('is-active', on);
+        p.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+
+      document.documentElement.setAttribute('data-filter', value);
+    };
+
+    applyFilter(initial, false);
+
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const value = pill.dataset.filter ?? 'all';
+        try { localStorage.setItem(STORAGE_KEY, value); } catch { /* ignore */ }
+        applyFilter(value, true);
+      });
+    });
+  }
+</script>

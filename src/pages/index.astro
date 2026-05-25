@@ -3,21 +3,21 @@ import Layout from '../layouts/Layout.astro';
 import Contact from '../components/Contact.astro';
 import SideNav from '../components/SideNav.astro';
 import MobileNav from '../components/MobileNav.astro';
+import WorkFilter from '../components/WorkFilter.astro';
 import { work, projects, exhibitions } from '../data/work';
 import type { WorkEntry } from '../data/work';
-import { caseStudies } from '../data/case-studies';
 import { imgDims } from '../data/image-dimensions';
 import { imgAlt } from '../data/image-alt';
 
 const hasProjectPage = (entry: WorkEntry) => entry.projectDescription || entry.projectHero || entry.heroVideo;
-const linkLabel = (entry: WorkEntry) => caseStudies[entry.slug] ? 'View use case →' : 'View project →';
+const linkLabel = (_entry: WorkEntry) => 'View project →';
 
 const navItems = [
   { id: 'top', label: 'Top' },
   { id: 'about', label: 'About' },
   { id: 'work', label: 'Work' },
   { id: 'projects', label: 'Projects' },
-  { id: 'exhibitions', label: 'Exhibitions' },
+  ...(exhibitions.length > 0 ? [{ id: 'exhibitions', label: 'Exhibitions' }] : []),
   { id: 'connect', label: 'Connect' },
 ];
 ---
@@ -79,12 +79,14 @@ const navItems = [
         </div>
       </section>
 
+      <WorkFilter />
+
       <!-- Work -->
       <section class="section fade-in work" id="work">
         <h2 class="section__label">Work</h2>
         <div class="work__list">
           {work.map((entry, i) => (
-            <article class={`work__entry ${i === 0 ? 'fade-in' : 'animate'}`}>
+            <article class={`work__entry ${i === 0 ? 'fade-in' : 'animate'}`} data-categories={entry.categories.map((c) => c.toLowerCase()).join(' ')}>
               <span class="work__period">{entry.period}</span>
               <h3 class="work__title">{entry.company}</h3>
               <span class="work__company">{entry.title}</span>
@@ -105,7 +107,7 @@ const navItems = [
         <h2 class="section__label">Projects</h2>
         <div class="work__list">
           {projects.map((entry) => (
-            <article class="work__entry animate">
+            <article class="work__entry animate" data-categories={entry.categories.map((c) => c.toLowerCase()).join(' ')}>
               <span class="work__period">{entry.period}</span>
               <h3 class="work__title">{entry.company}</h3>
               <span class="work__company">{entry.title}</span>
@@ -123,28 +125,29 @@ const navItems = [
         </div>
       </section>
 
-      <!-- Exhibitions -->
-      <section class="section work animate" id="exhibitions">
-        <h2 class="section__label">Exhibitions</h2>
-        <div class="work__list">
-          {exhibitions.map((entry) => (
-            <article class="work__entry animate">
-              <span class="work__period">{entry.period}</span>
-              <h3 class="work__title">{entry.company}</h3>
-              <span class="work__company">{entry.title}</span>
-              <p class="work__description">{entry.description}</p>
-              {!entry.image.includes('work-') && (
-                <div class="work__image">
-                  <img src={entry.image} alt={imgAlt(entry.image)} loading="lazy" width={imgDims(entry.image)?.width} height={imgDims(entry.image)?.height} />
-                </div>
-              )}
-              {hasProjectPage(entry) && (
-                <a href={`/work/${entry.slug}`} class="work__link">{linkLabel(entry)}</a>
-              )}
-            </article>
-          ))}
-        </div>
-      </section>
+      {exhibitions.length > 0 && (
+        <section class="section work animate" id="exhibitions">
+          <h2 class="section__label">Exhibitions</h2>
+          <div class="work__list">
+            {exhibitions.map((entry) => (
+              <article class="work__entry animate" data-categories={entry.categories.map((c) => c.toLowerCase()).join(' ')}>
+                <span class="work__period">{entry.period}</span>
+                <h3 class="work__title">{entry.company}</h3>
+                <span class="work__company">{entry.title}</span>
+                <p class="work__description">{entry.description}</p>
+                {!entry.image.includes('work-') && (
+                  <div class="work__image">
+                    <img src={entry.image} alt={imgAlt(entry.image)} loading="lazy" width={imgDims(entry.image)?.width} height={imgDims(entry.image)?.height} />
+                  </div>
+                )}
+                {hasProjectPage(entry) && (
+                  <a href={`/work/${entry.slug}`} class="work__link">{linkLabel(entry)}</a>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
     </main>
 
@@ -260,8 +263,8 @@ const navItems = [
 
   .hero { transition-delay: 0s; }
   .about { transition-delay: 0.3s; }
-  #work { transition-delay: 0.6s; }
-  .work__entry.fade-in { transition-delay: 0.6s; }
+  #work { transition-delay: 0.8s; }
+  .work__entry.fade-in { transition-delay: 0.8s; }
 
   .section.is-visible {
     opacity: 1;
