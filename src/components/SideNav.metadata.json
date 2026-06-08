@@ -1,0 +1,67 @@
+{
+  "component": {
+    "name": "SideNav",
+    "category": "molecule",
+    "description": "Sticky vertical navigation rail anchored to the right column of the desktop grid. Renders an anchor link per item plus the shared ThemeToggle. Hidden below 768px in favour of MobileNav.",
+    "type": "navigation"
+  },
+  "usage": {
+    "useCases": [
+      "in-page section jumping on long scrollable pages",
+      "consistent right-rail navigation across desktop views"
+    ],
+    "requiredProps": ["items"],
+    "commonPatterns": [
+      {
+        "name": "section anchors",
+        "description": "Each item id matches a section id on the page.",
+        "composition": "<SideNav items={[{id:'projects',label:'Projects'},{id:'connect',label:'Connect'}]} />"
+      },
+      {
+        "name": "paired with MobileNav",
+        "description": "Pass the same `items` array to both so desktop and mobile stay in sync.",
+        "composition": "<SideNav items={navItems} />\n<MobileNav items={navItems} />"
+      }
+    ],
+    "antiPatterns": [
+      {
+        "scenario": "using for external links",
+        "reason": "Links are constructed as `#${id}` and assume in-page targets.",
+        "alternative": "Use a regular anchor outside this component for external destinations."
+      },
+      {
+        "scenario": "overriding `.side-nav` positioning",
+        "reason": "Layout grid reserves a 90px column on the right; changing position breaks the two-column grid.",
+        "alternative": "Adjust the grid in Layout/pages, keep SideNav structural CSS intact."
+      }
+    ]
+  },
+  "composition": {
+    "slots": {},
+    "nestedComponents": ["ThemeToggle"],
+    "commonPartners": ["MobileNav", "Layout"],
+    "parentConstraints": ["expects to live in the right column of the two-column page grid"]
+  },
+  "behavior": {
+    "states": ["hover (color shifts to --color-hover)"],
+    "interactions": { "anchorJump": "Standard browser scroll to id" },
+    "responsive": {
+      "<=768px": "display:none; MobileNav takes over"
+    }
+  },
+  "accessibility": {
+    "role": "navigation",
+    "keyboardSupport": "Standard tab order across links and the theme toggle",
+    "screenReader": "aria-label=\"Page navigation\"",
+    "focusManagement": "native focus, min-height respects --touch-target-compact",
+    "wcag": "AA"
+  },
+  "props": {
+    "items": { "type": "{ id: string; label: string }[]", "required": true }
+  },
+  "aiHints": {
+    "priority": "high",
+    "keywords": ["nav", "sidebar", "anchors", "sticky", "right rail"],
+    "context": "Reuse for any desktop page that needs in-page navigation. Always pair with MobileNav passing the same items."
+  }
+}

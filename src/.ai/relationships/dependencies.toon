@@ -1,0 +1,35 @@
+npm[3]{name,version,role,usedIn}:
+astro,^6.1.2,framework,all
+@astrojs/sitemap,^3.7.2,integration,astro.config.mjs
+@astrojs/vercel,^10.0.3,adapter,astro.config.mjs
+
+externalAssets[3]{kind,host,purpose}:
+font-stylesheet,api.fontshare.com,Nippo font (loaded in Layout head)
+font-cdn,cdn.fontshare.com,Nippo font files
+self-hosted,/fonts/,Quantico woff2 (preloaded in Layout head)
+
+designTokens:
+  source: src/styles/global.css
+  scope: defined under :root and overridden by [data-theme="dark"]
+  categories[6]: colors,spacing,typography,layout,radius,touch-targets
+  accent: --color-accent (#cff500)
+  breakpoint: 768px
+
+cssClasses:
+  convention: BEM-like (.block__element, .block--modifier)
+  scoping:
+    global: src/styles/global.css imported via <style is:global> in Layout
+    local: per-component <style> blocks (Astro scoped by default)
+  animationClasses[3]: fade-in,animate,is-visible
+
+utilities[0]:
+
+securityHeaders:
+  source: vercel.json
+  configured[7]: HSTS,X-Content-Type-Options,X-Frame-Options,Referrer-Policy,Permissions-Policy,CSP,Cache-Control
+  cspNotes: script-src includes 'unsafe-inline' for theme bootstrap and JSON-LD blocks
+
+notes:
+  - No UI framework runtime (no React, Vue, Svelte). Pure .astro components only.
+  - No CSS-in-JS, no Tailwind. All styling routes through tokens in global.css.
+  - No lib/utils directory; helpers live inline in components or in src/data/*.ts.

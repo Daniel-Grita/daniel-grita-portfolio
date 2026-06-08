@@ -27,7 +27,3 @@ pnpm-debug.log*
 # skill scratch + asset backups
 .impeccable.md
 public/**/_backup/
-
-# local-only AI context (regenerate via codebase-index skill; metadata hand-authored)
-src/.ai/
-**/*.metadata.json

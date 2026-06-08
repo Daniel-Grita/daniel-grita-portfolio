@@ -1,0 +1,65 @@
+{
+  "component": {
+    "name": "ThemeToggle",
+    "category": "atom",
+    "description": "Single-button light/dark toggle. Renders two glyphs (sun and moon); the inline script in Layout shows the active one and persists the choice to localStorage under 'theme'.",
+    "type": "interactive"
+  },
+  "usage": {
+    "useCases": [
+      "let the user override the system colour scheme",
+      "drop into any nav or toolbar that needs theme control"
+    ],
+    "requiredProps": [],
+    "commonPatterns": [
+      {
+        "name": "inside a nav",
+        "description": "Most common placement; both SideNav and MobileNav already include it.",
+        "composition": "<ThemeToggle />"
+      },
+      {
+        "name": "standalone on a page",
+        "description": "Render alone where neither nav is present, e.g. utility pages or the design system reference.",
+        "composition": "<ThemeToggle />"
+      }
+    ],
+    "antiPatterns": [
+      {
+        "scenario": "rewriting the toggle script per page",
+        "reason": "The wiring lives once at the bottom of Layout.astro and finds every .theme-toggle on the page.",
+        "alternative": "Render the component; the existing script picks it up."
+      },
+      {
+        "scenario": "reading data-theme from JS before the head script runs",
+        "reason": "The anti-flash bootstrap runs first and sets the correct value; doing it elsewhere risks a flash.",
+        "alternative": "Read document.documentElement.dataset.theme inside event handlers, not at module top-level."
+      }
+    ]
+  },
+  "composition": {
+    "slots": {},
+    "nestedComponents": [],
+    "commonPartners": ["SideNav", "MobileNav"],
+    "parentConstraints": ["must be rendered inside Layout so the toggle script wires it up"]
+  },
+  "behavior": {
+    "states": ["light (sun visible)", "dark (moon visible)"],
+    "interactions": {
+      "click": "Toggles data-theme on <html> and writes localStorage 'theme' = 'light' | 'dark'"
+    },
+    "responsive": {}
+  },
+  "accessibility": {
+    "role": "button",
+    "keyboardSupport": "native button activation (Enter / Space)",
+    "screenReader": "aria-label=\"Toggle dark mode\"",
+    "focusManagement": "native focus outline",
+    "wcag": "AA"
+  },
+  "props": {},
+  "aiHints": {
+    "priority": "medium",
+    "keywords": ["theme", "dark mode", "toggle", "icon button"],
+    "context": "Reuse rather than rebuilding. Multiple instances are fine; all share state via data-theme + localStorage."
+  }
+}

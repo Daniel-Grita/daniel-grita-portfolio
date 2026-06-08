@@ -1,0 +1,19 @@
+components[6]{name,path,type,framework,uses,usedBy}:
+Layout,src/layouts/Layout.astro,layout,astro,[0]:,[3]: index,design-system,work/[slug]
+SideNav,src/components/SideNav.astro,component,astro,[1]: ThemeToggle,[3]: index,design-system,work/[slug]
+MobileNav,src/components/MobileNav.astro,component,astro,[1]: ThemeToggle,[3]: index,design-system,work/[slug]
+ThemeToggle,src/components/ThemeToggle.astro,component,astro,[0]:,[3]: SideNav,MobileNav,design-system
+Contact,src/components/Contact.astro,component,astro,[0]:,[2]: index,work/[slug]
+WorkFilter,src/components/WorkFilter.astro,component,astro,[0]:,[1]: index
+
+pages[3]{name,path,type,uses}:
+index,src/pages/index.astro,page,[5]: Layout,Contact,SideNav,MobileNav,WorkFilter
+design-system,src/pages/design-system.astro,page,[4]: Layout,SideNav,MobileNav,ThemeToggle
+work/[slug],src/pages/work/[slug].astro,dynamic-page,[4]: Layout,Contact,SideNav,MobileNav
+
+notes:
+  - ThemeToggle is a leaf component embedded inside both nav variants and rendered standalone on the design system page.
+  - Layout slots a single <slot/>; every page wraps its content in it.
+  - Contact is the shared footer for narrative pages (index and project detail).
+  - SideNav and MobileNav share the same `items` prop shape ({id,label}[]); pages pass an identical array to both.
+  - WorkFilter is index-only; it reads data-categories from every .work__entry on the page and toggles visibility globally.

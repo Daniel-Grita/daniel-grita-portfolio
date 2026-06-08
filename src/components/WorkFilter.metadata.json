@@ -1,0 +1,74 @@
+{
+  "component": {
+    "name": "WorkFilter",
+    "category": "molecule",
+    "description": "Compound-pill filter row that narrows the Work / Projects / Exhibitions lists by discipline. Single-select with five options (All, Photography, Design, Video, AI). Reads each entry's data-categories attribute, hides non-matches with a 200ms fade then display:none, and hides whole sections when their list becomes empty. Selection persists to localStorage under 'work-filter'.",
+    "type": "interactive"
+  },
+  "usage": {
+    "useCases": [
+      "let visitors (especially recruiters) self-select work by discipline on the home page"
+    ],
+    "requiredProps": [],
+    "commonPatterns": [
+      {
+        "name": "between bio and work label",
+        "description": "Placed once on index.astro between #about and the Work section so it can affect every list that follows.",
+        "composition": "<section id=\"about\">...</section>\n<WorkFilter />\n<section id=\"work\">...</section>"
+      }
+    ],
+    "antiPatterns": [
+      {
+        "scenario": "rendering more than one WorkFilter on the same page",
+        "reason": "Both instances would read/write the same localStorage key and fight over the global section/entry classes.",
+        "alternative": "Render once. If a second filter is ever needed, scope its data-categories selector and storage key."
+      },
+      {
+        "scenario": "filtering entries that lack data-categories",
+        "reason": "The script only touches .work__entry[data-categories]; an entry without the attribute is treated as permanently visible.",
+        "alternative": "Every entry in work.ts must declare categories: WorkCategory[] (enforced by the interface)."
+      },
+      {
+        "scenario": "adding category tags to the work card UI",
+        "reason": "Decided against; the project description already conveys the discipline and tags would compete with it.",
+        "alternative": "Keep categories as invisible metadata used only by the filter."
+      }
+    ]
+  },
+  "composition": {
+    "slots": {},
+    "nestedComponents": [],
+    "commonPartners": ["work entries on index.astro"],
+    "parentConstraints": [
+      "must be rendered on a page where every .work__entry has a data-categories attribute (currently only index.astro)"
+    ]
+  },
+  "behavior": {
+    "states": [
+      "all (default)",
+      "photography",
+      "design",
+      "video",
+      "ai"
+    ],
+    "interactions": {
+      "click": "Sets the active pill, writes localStorage 'work-filter', and shows/hides matching .work__entry nodes."
+    },
+    "responsive": {
+      "mobile": "Pill row becomes horizontally scrollable with hidden scrollbar; pills bleed to the page edges so they're reachable."
+    }
+  },
+  "accessibility": {
+    "role": "tablist with role=tab buttons",
+    "keyboardSupport": "native button activation (Enter / Space); tab order follows DOM",
+    "screenReader": "aria-pressed reflects the active pill; a visually-hidden aria-live region announces the new count after each change",
+    "focusManagement": "native focus outline",
+    "wcag": "AA"
+  },
+  "props": {},
+  "aiHints": {
+    "priority": "high",
+    "keywords": ["filter", "category", "discipline", "pills", "tabs", "work", "projects"],
+    "context": "When adding a new work or project entry, declare its categories in work.ts so the filter picks it up. Categories live in the WorkCategory union ('Photography' | 'Design' | 'Video' | 'AI'); add a new value to the union AND a matching pill in WorkFilter.astro if a new discipline ships."
+  }
+}

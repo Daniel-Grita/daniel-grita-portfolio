@@ -1,0 +1,67 @@
+{
+  "component": {
+    "name": "Contact",
+    "category": "organism",
+    "description": "Site-wide footer with the 'Connect' heading, a short freelance pitch, and direct links (email, phone, LinkedIn, Instagram). Has no props; copy and links are hardcoded.",
+    "type": "display"
+  },
+  "usage": {
+    "useCases": [
+      "page-ending CTA on narrative pages (index, project detail)",
+      "anchor target for the #connect nav link"
+    ],
+    "requiredProps": [],
+    "commonPatterns": [
+      {
+        "name": "end-of-page",
+        "description": "Always render as the last child below page sections.",
+        "composition": "<main>...</main>\n<Contact />"
+      }
+    ],
+    "antiPatterns": [
+      {
+        "scenario": "rendering more than once on a page",
+        "reason": "id=\"connect\" must be unique; nav anchors would land on the first instance only.",
+        "alternative": "Render once per page."
+      },
+      {
+        "scenario": "hardcoding new contact links inline elsewhere",
+        "reason": "Drifts from the canonical list; updates miss sites.",
+        "alternative": "Edit Contact.astro so every page picks up the change."
+      },
+      {
+        "scenario": "using em dashes in body copy",
+        "reason": "Project copy style avoids em dashes.",
+        "alternative": "Use a period, comma, or 'and'."
+      }
+    ]
+  },
+  "composition": {
+    "slots": {},
+    "nestedComponents": [],
+    "commonPartners": ["Layout", "SideNav", "MobileNav"],
+    "parentConstraints": ["should be the last section so the #connect anchor lands at page end"]
+  },
+  "behavior": {
+    "states": ["initial (opacity 0)", "is-visible (faded in via IntersectionObserver)"],
+    "interactions": {
+      "scrollReveal": "Picked up by the .animate observer in the page script and revealed when 15% in view"
+    },
+    "responsive": {
+      "<=768px": "contact__links stack vertically"
+    }
+  },
+  "accessibility": {
+    "role": "contentinfo",
+    "keyboardSupport": "Standard link tab order",
+    "screenReader": "Renders as <footer>; section label is the visible 'Connect' heading",
+    "focusManagement": "External links open in new tab with rel=\"noopener noreferrer\"",
+    "wcag": "AA"
+  },
+  "props": {},
+  "aiHints": {
+    "priority": "medium",
+    "keywords": ["footer", "contact", "cta", "connect", "links"],
+    "context": "Use on any page that should end with the standard contact block. Don't duplicate; don't reinvent inline."
+  }
+}

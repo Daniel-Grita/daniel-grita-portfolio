@@ -1,0 +1,65 @@
+{
+  "component": {
+    "name": "MobileNav",
+    "category": "molecule",
+    "description": "Horizontal sticky top navigation that appears only at <=768px. Mirrors SideNav's items and embeds the shared ThemeToggle. Scrolls horizontally if items overflow.",
+    "type": "navigation"
+  },
+  "usage": {
+    "useCases": [
+      "small-viewport replacement for SideNav",
+      "persistent top access to section anchors and theme toggle on mobile"
+    ],
+    "requiredProps": ["items"],
+    "commonPatterns": [
+      {
+        "name": "shared with SideNav",
+        "description": "Both components consume the same `items` array; declare once per page.",
+        "composition": "const navItems = [{id:'projects',label:'Projects'},{id:'connect',label:'Connect'}];\n<SideNav items={navItems} />\n<MobileNav items={navItems} />"
+      }
+    ],
+    "antiPatterns": [
+      {
+        "scenario": "rendering items not present on the page",
+        "reason": "Anchors target `#id` and break silently if the section is missing.",
+        "alternative": "Only pass ids that exist as section/element ids on the current route."
+      },
+      {
+        "scenario": "overriding `position: sticky`",
+        "reason": "Sticky behaviour is the whole purpose of MobileNav.",
+        "alternative": "Adjust the surrounding scroll container instead."
+      }
+    ]
+  },
+  "composition": {
+    "slots": {},
+    "nestedComponents": ["ThemeToggle"],
+    "commonPartners": ["SideNav", "Layout"],
+    "parentConstraints": ["place near the top of the page body so position:sticky works"]
+  },
+  "behavior": {
+    "states": ["hover (color shifts to --color-hover)"],
+    "interactions": {
+      "horizontalScroll": "Overflow-x:auto with scrollbar hidden; touch scrolling enabled"
+    },
+    "responsive": {
+      ">768px": "display:none",
+      "<=768px": "display:flex sticky top:0"
+    }
+  },
+  "accessibility": {
+    "role": "navigation",
+    "keyboardSupport": "Standard tab order",
+    "screenReader": "aria-label=\"Mobile navigation\"",
+    "focusManagement": "links respect --touch-target-min",
+    "wcag": "AA"
+  },
+  "props": {
+    "items": { "type": "{ id: string; label: string }[]", "required": true }
+  },
+  "aiHints": {
+    "priority": "high",
+    "keywords": ["mobile", "nav", "top bar", "sticky", "responsive"],
+    "context": "Always render alongside SideNav with identical items; never use as the sole nav on desktop."
+  }
+}

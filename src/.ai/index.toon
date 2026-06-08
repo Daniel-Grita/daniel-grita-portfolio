@@ -1,0 +1,32 @@
+project:
+  name: daniel-grita-portfolio
+  framework: astro
+  frameworkVersion: 6.1.2
+  language: typescript
+  styling: plain-css
+  deployTarget: vercel
+  node: 22.x
+  generatedAt: 2026-05-24
+  generator: codebase-index v1.2.0 (hand-rendered, no Python on host)
+
+structure:
+  components: src/components
+  layouts: src/layouts
+  pages: src/pages
+  data: src/data
+  styles: src/styles
+  publicAssets: public
+
+files:
+  componentUsage: src/.ai/relationships/component-usage.toon
+  dependencies: src/.ai/relationships/dependencies.toon
+  dataFlow: src/.ai/relationships/data-flow.toon
+
+statistics:
+  totalComponents: 5
+  layouts: 1
+  components: 4
+  pages: 3
+  dynamicRoutes: 1
+  dataModules: 4
+  npmRuntimeDeps: 3

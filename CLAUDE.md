@@ -87,7 +87,7 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 - Toggle button placed in side nav, mobile nav, and project pages
 - User preference persisted to `localStorage` under key `theme`
 
-## AI context files (local-only, gitignored)
+## AI context files (committed to the repo)
 
 Before creating or modifying components/features, read:
 - `src/.ai/index.toon` — start here (small overview)

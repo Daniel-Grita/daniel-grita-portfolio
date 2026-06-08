@@ -1,0 +1,17 @@
+dataModules[4]{name,path,exports,shape,consumers}:
+work,src/data/work.ts,[5]: work,projects,exhibitions,allEntries,WorkEntry,WorkEntry[],[2]: index,work/[slug]
+case-studies,src/data/case-studies.ts,[1]: caseStudies,Record<slug,CaseStudy>,[2]: index,work/[slug]
+image-dimensions,src/data/image-dimensions.ts,[1]: imgDims,Record<path,{w,h}>,[2]: index,work/[slug]
+image-alt,src/data/image-alt.ts,[1]: imgAlt,fn(path) -> string (filename-derived; manual map planned),[2]: index,work/[slug]
+
+routes[2]{path,kind,source,dataDriver}:
+/work/[slug],dynamic,src/pages/work/[slug].astro,allEntries.find(e => e.slug === slug)
+/,static,src/pages/index.astro,work + projects + exhibitions arrays
+
+externalQueries[0]:
+
+notes:
+  - No CMS or API layer. All content is committed in src/data/*.ts.
+  - work.ts is the canonical source of truth; index page reads grouped arrays, project page resolves by slug from `allEntries`.
+  - Per project memory: prefer allEntries.find() over destructuring complex fields from Astro.props on the dynamic route.
+  - image-alt is flagged for a P2 upgrade: replace derived function with hand-written lookup map.

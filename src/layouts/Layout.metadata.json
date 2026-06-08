@@ -1,0 +1,85 @@
+{
+  "component": {
+    "name": "Layout",
+    "category": "template",
+    "description": "Single shared HTML shell. Sets head metadata (title, description, OG/Twitter, canonical, sitemap), preloads Quantico + Fontshare Nippo, runs the anti-flash dark-mode bootstrap, and exposes a single <slot/> for page content.",
+    "type": "container"
+  },
+  "usage": {
+    "useCases": [
+      "wrap every routable page",
+      "set per-page SEO metadata (title, description, OG image)",
+      "opt a page out of indexing via noindex"
+    ],
+    "requiredProps": [],
+    "commonPatterns": [
+      {
+        "name": "homepage",
+        "description": "Default site-wide title and description; OG image falls back to /images/payxpert.webp.",
+        "composition": "<Layout>\n  <main>...</main>\n</Layout>"
+      },
+      {
+        "name": "project page",
+        "description": "Pass project-specific title, description, and OG image for shareable previews.",
+        "composition": "<Layout title={`${entry.client} | Daniel Grita`} description={entry.summary} ogImage={`/images/${entry.image}`}>\n  ...\n</Layout>"
+      },
+      {
+        "name": "hidden page",
+        "description": "Use noindex for unlisted utility pages so they stay out of search results.",
+        "composition": "<Layout title=\"Internal\" noindex>...</Layout>"
+      }
+    ],
+    "antiPatterns": [
+      {
+        "scenario": "wrapping inside another Layout",
+        "reason": "Produces nested <html> / <head> and breaks the head metadata contract.",
+        "alternative": "Use Layout once per page at the top level only."
+      },
+      {
+        "scenario": "rendering global <head> tags inside page bodies",
+        "reason": "Layout owns the document head; duplicate tags will conflict (canonical, theme-color, og:*).",
+        "alternative": "Add new head tags inside Layout.astro behind a prop."
+      },
+      {
+        "scenario": "moving the anti-flash theme script out of Layout head",
+        "reason": "It must run before paint to avoid a light/dark flash.",
+        "alternative": "Keep it inline in Layout head; only the toggle handler script can move."
+      }
+    ]
+  },
+  "composition": {
+    "slots": { "default": "Entire page body" },
+    "nestedComponents": [],
+    "commonPartners": ["SideNav", "MobileNav", "Contact"],
+    "parentConstraints": ["must be the outermost component on a page"]
+  },
+  "behavior": {
+    "states": [],
+    "interactions": {
+      "themeToggle": "Bottom-of-body inline script wires every .theme-toggle button to flip data-theme on <html> and persist to localStorage under key 'theme'."
+    },
+    "responsive": {
+      "viewport": "width=device-width, initial-scale=1.0",
+      "themeColor": "switches between #ffffff (light) and #121412 (dark) via prefers-color-scheme"
+    }
+  },
+  "accessibility": {
+    "role": "document",
+    "keyboardSupport": "n/a (container only)",
+    "screenReader": "Sets <html lang=\"en\"> and document <title>",
+    "focusManagement": "n/a",
+    "wcag": "AA"
+  },
+  "props": {
+    "title": { "type": "string", "default": "Daniel Grita | Graphic and Web Design based in Barcelona" },
+    "description": { "type": "string", "default": "site default copy in Layout.astro" },
+    "ogImage": { "type": "string (path under /public)", "default": "/images/payxpert.webp" },
+    "ogType": { "type": "'website' | 'article'", "default": "website" },
+    "noindex": { "type": "boolean", "default": false }
+  },
+  "aiHints": {
+    "priority": "high",
+    "keywords": ["layout", "shell", "head", "seo", "og", "meta", "dark mode", "theme"],
+    "context": "Always wrap new pages in this. Do not re-implement document head or theme bootstrap."
+  }
+}
