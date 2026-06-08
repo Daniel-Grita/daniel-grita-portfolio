@@ -87,45 +87,59 @@ When adding new styles, use existing CSS custom properties rather than hardcoded
 - Toggle button placed in side nav, mobile nav, and project pages
 - User preference persisted to `localStorage` under key `theme`
 
-## Session Recap (2026-05-20)
+## AI context files (local-only, gitignored)
+
+Before creating or modifying components/features, read:
+- `src/.ai/index.toon` — start here (small overview)
+- `src/.ai/relationships/component-usage.toon` — who uses what
+- `src/components/*.metadata.json` + `src/layouts/Layout.metadata.json` — read the file matching the component you're touching
+
+Regenerate the `src/.ai/` index when component structure changes meaningfully (skill: `codebase-index`). `.metadata.json` files are hand-authored — update them when a component's props, partners, or anti-patterns change.
+
+## Feature work
+
+When asked to plan, design, or build a new feature, follow the `spec-ideation` skill at `.claude/skills/spec-ideation/SKILL.md` (expansion → contraction → documentation phases). Read it before proposing an approach.
+
+## Session Recap (2026-05-24)
 
 ### What landed this session
 
-**Security + bloat sweep.** Full audit pass on the live site, four fixes committed in `77de6cc` and pushed to `master`.
+**Three Giorris skills installed** via `npx giorris-claude-skills install <name>`: `ai-component-metadata`, `codebase-index`, `spec-ideation`. All live under `.claude/skills/` (gitignored implicitly, since `.claude/` is not tracked except for `settings.local.json`).
 
-**`npm audit fix`.** Patched dev-time vite (3 highs) + postcss (1 moderate). The 3 remaining `path-to-regexp` highs are inside `@astrojs/vercel`'s build chain — only fixable via major downgrade to `@astrojs/vercel@8`, left alone since they're build-time only and Vercel patches their own runtime.
+**Codebase index hand-written.** Python is not installed on this host, so the `codebase-index` script could not run. Project is small enough that the same TOON output was hand-authored at `src/.ai/`:
+- `index.toon` — project overview
+- `relationships/component-usage.toon` — 5 components × 3 pages graph
+- `relationships/dependencies.toon` — npm, fonts, tokens, security headers
+- `relationships/data-flow.toon` — `src/data/*` modules and routes
 
-**Video re-encoding (76 MB → 25 MB).** Used ffmpeg with `libx264 -crf 28 -preset slow`, scaled to max 1280w, `+faststart` for instant playback, AAC 96k stereo.
-- `chut.mp4`: 14 MB → 4.4 MB
-- `cuerpo-habitable.mp4`: 45 MB → 12 MB
-- `oakley.mp4`: 18 MB → 9 MB
+**Component metadata authored.** One `.metadata.json` per reusable component, following the `ai-component-metadata` schema, grounded in this project's reality (real props, partner components, anti-patterns from CLAUDE.md + memory):
+- `src/layouts/Layout.metadata.json`
+- `src/components/{SideNav,MobileNav,ThemeToggle,Contact}.metadata.json`
 
-**UxU image re-compression.** Used sharp via node, resized 8000w sources to 1600w WebP at q72–78.
-- `uxu-applications.webp`: 2.3 MB → 51 KB
-- `uxu-hero.webp`: 670 KB → 35 KB
-- `uxu-lowercase.webp`: 159 KB → 17 KB
-- `uxu-uppercase.webp`: 151 KB → 16 KB
+**Local-only by design.** Both AI-context outputs (`src/.ai/` and `**/*.metadata.json`) added to `.gitignore`. They serve this machine's agent context, not collaborators.
 
-**`vercel.json` security headers.** New file at repo root. HSTS (2yr preload), `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy` denying camera/mic/geo/payment/usb/FLoC, and a CSP allowing self + Fontshare. Bonus: 1-year immutable `Cache-Control` for woff2/webp/avif/jpg/jpeg/png/svg/mp4/pdf.
+**CLAUDE.md instructions added** (cheapest pointer pattern — ~80 tokens overhead, files only loaded when needed):
+- "AI context files" section telling future sessions to read `src/.ai/index.toon` + relevant `.metadata.json` before component work.
+- "Feature work" section telling future sessions to follow the `spec-ideation` skill before proposing new features.
 
-**Exhibitions section wired up.** New `#exhibitions` section on `src/pages/index.astro` rendering the `exhibitions` array from `src/data/work.ts`. Added to `navItems` between Projects and Connect.
+**spec-ideation registration fix.** Installer dropped `spec-ideation.mdx`; renamed to `SKILL.md` so a future Claude Code restart auto-registers it.
 
-**Gitignore additions.** `.impeccable.md` (skill scratch) and `public/**/_backup/` (asset rollback dirs created during compression, since deleted).
+### How the new system is meant to work
 
-### CSP caveat
+- **New feature** → read `.claude/skills/spec-ideation/SKILL.md`, run its expansion → contraction → documentation phases.
+- **Touching a component** → read its `.metadata.json` + `src/.ai/relationships/component-usage.toon`.
+- **Component structure changes** → regenerate the index (currently by hand; install Python to use the script).
 
-`'unsafe-inline'` is in `script-src` because of the inline theme-toggle script in `Layout.astro:55-63` and the JSON-LD `set:html` block in `index.astro:29`. If analytics or a third-party widget is added later, whitelist its domain in `script-src` / `connect-src`.
+### Outstanding (carried from 2026-05-20)
 
-### Outstanding (priority order)
-
-1. **[P2] Alt text upgrade.** Replace `src/data/image-alt.ts` filename-derived function with a hand-written lookup map keyed by image path. Fallback to derived form for undescribed images. Example: `'/images/payxpert.webp': 'PayXpert payment terminal on a warm-lit retail counter'`. Every image in `src/data/image-dimensions.ts` is a candidate.
-
+1. **[P2] Alt text upgrade.** Replace `src/data/image-alt.ts` filename-derived function with a hand-written lookup map keyed by image path. Fallback to derived form for undescribed images. Every image in `src/data/image-dimensions.ts` is a candidate.
 2. **[P3] Favicon.** User to author chartreuse monogram SVG, drop at `public/favicon.svg`. `<link rel="icon">` already wired up in `Layout.astro:26`.
-
-3. **OG image.** User designing in Figma. Target: 1200×630 JPG at `public/og-default.jpg`, then update `Layout.astro` `ogImage` default (currently falls back to `/images/payxpert.webp`).
+3. **OG image.** User designing in Figma. Target: 1200×630 JPG at `public/og-default.jpg`, then update `Layout.astro` `ogImage` default.
 
 ### Carryover
 
-- **Page transitions (deferred).** Fresh attempt options when revisited: chartreuse wipe panel, blocky grid reveal, monospace scramble for titles.
+- **Install Python** if we want `codebase-index` to regenerate automatically. Until then, refresh `src/.ai/` by hand when component structure shifts.
+- **Page transitions (deferred).** Options when revisited: chartreuse wipe panel, blocky grid reveal, monospace scramble for titles.
 - **Disconnect Google Drive MCP** via claude.ai settings (can't remove via CLI).
-- **Re-encoded video QA.** Visual review on production was skipped — if any of the three MP4s look soft, originals are gone but encode params are documented above; re-export from source at higher CRF (e.g. 24).
+- **Re-encoded video QA.** Visual review on production still skipped; re-export from source at higher CRF if any of the three MP4s look soft.
+- **CSP caveat.** `'unsafe-inline'` is in `script-src` for the Layout theme bootstrap and `index.astro` JSON-LD; whitelist domains in `script-src`/`connect-src` if analytics or a third-party widget gets added.
